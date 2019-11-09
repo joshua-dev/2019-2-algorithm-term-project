@@ -5,5 +5,5 @@
 # TODO
 
 - [x] Sokoban game implementation
-- [ ] Code Refactoring
+- [x] Code Refactoring
 - [ ] Sokoban Resolving algorithm

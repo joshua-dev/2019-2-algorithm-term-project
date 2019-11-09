@@ -1,46 +1,49 @@
 #include "Map.h"
 
-// 기본 생성자는 map과 default_map을 Null space로 채운다.
+/*
+Default constructor
+: fills map and default_map with Null spaces
+*/
 Map::Map()
 {
-    for (int i = 0; i < 10; ++i)
-    {
-        for (int j = 0; j < 10; ++j)
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
         {
             this->map[i][j] = 4;
             this->default_map[i][j] = 4;
         }
-    }
 }
 
-/*  
-복사 생성자는 main()에서 선언된 2차원 배열 map_of_stage를 map과 default_map에 복사
-목적지의 갯수를 numDest에 저장
-Step 횟수와 Push 횟수를 0으로 초기화
+/*
+Copy constructor
+: copies map_of_stage (declared on main) to map and default_map
+: stores number of destinations to numDest
+: initializes number of Step and Push to zero 
 */
-Map::Map(int map_of_stage[10][10])
+Map::Map(int map_of_stage[8][8])
 {
-    for (int i = 0; i < 10; ++i)
-    {
-        for (int j = 0; j < 10; ++j)
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
         {
             this->map[i][j] = map_of_stage[i][j];
             this->default_map[i][j] = map_of_stage[i][j];
         }
-    }
+
     countDest();
     numStep = 0;
     numPush = 0;
 }
 
-// map의 (target_x, target_y) 위치의 값을 input으로 변경
+/*
+changes coordinate (target_x, target_y) to input
+*/
 Map &Map::setElement(int target_x, int target_y, int input)
 {
     this->map[target_x][target_y] = input;
     return *this;
 }
 
-// 캐릭터의 위치를 (target_x, target_y)로 설정
+// set location of character (target_x, target_y)
 Map &Map::setCharacter(int target_x, int target_y)
 {
     this->map[target_x][target_y] = 5;

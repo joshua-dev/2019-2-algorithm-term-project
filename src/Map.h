@@ -1,7 +1,7 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-// Interface for Sokoban Map and its Logics
+/* Interface for Sokoban Map and its Logics */
 
 /*
 0 : Null space
@@ -22,7 +22,7 @@ public:
     Map();
 
     // Copy Constructor
-    Map(int map_of_stage[10][10]);
+    Map(int map_of_stage[8][8]);
 
     // Member Functions
     Map &setElement(int target_x, int target_y, int input);
@@ -38,8 +38,8 @@ public:
     // Member Variables
     int numDest;
     int numBoxOnDest;
-    int map[10][10];
-    int default_map[10][10];
+    int map[8][8];
+    int default_map[8][8];
     int location_of_character[2];
     int numStep;
     int numPush;
