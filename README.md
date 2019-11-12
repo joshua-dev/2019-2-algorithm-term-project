@@ -4,6 +4,15 @@
 
 # TODO
 
-- [x] Sokoban game implementation
-- [x] Code Refactoring
+- [ ] Sokoban game implementation
+
+- [ ] Interface Design
+- [ ] Highest Level Class Definition
+- [ ] Sub-Class Implementation
+- [ ] Utility Class (Game Manager) Implementation
+- [ ] Observer Class Implementation
+- [ ] Code Refactoring
+
 - [ ] Sokoban Resolving algorithm
+
+- [ ] TUI Component
