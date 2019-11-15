@@ -18,41 +18,35 @@ int main(int argc, char **argv)
 	6 : Box on destination
 	*/
 
-	int mapOne[10][10] = {
-		{4, 4, 1, 1, 1, 1, 4, 4, 4, 4},
-		{4, 4, 1, 3, 0, 1, 1, 4, 4, 4},
-		{4, 4, 1, 3, 0, 0, 1, 4, 4, 4},
-		{4, 4, 1, 3, 0, 0, 1, 4, 4, 4},
-		{4, 4, 1, 1, 0, 0, 1, 1, 1, 4},
-		{4, 4, 4, 1, 0, 0, 0, 0, 1, 4},
-		{4, 4, 4, 1, 0, 0, 0, 0, 1, 4},
-		{4, 4, 4, 1, 0, 0, 1, 1, 1, 4},
-		{4, 4, 4, 1, 1, 1, 1, 4, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4}};
+	int mapOne[8][8] = {
+		{4, 4, 1, 1, 1, 1, 4, 4},
+		{4, 4, 1, 3, 0, 1, 1, 4},
+		{4, 4, 1, 3, 0, 0, 1, 4},
+		{4, 4, 1, 3, 0, 0, 1, 4},
+		{4, 4, 1, 1, 0, 0, 1, 1},
+		{4, 4, 4, 1, 0, 0, 0, 0},
+		{4, 4, 4, 1, 0, 0, 0, 0},
+		{4, 4, 4, 1, 0, 0, 1, 1}};
 
-	int mapTwo[10][10] = {
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{4, 4, 1, 1, 1, 1, 1, 4, 4, 4},
-		{4, 4, 1, 0, 0, 0, 1, 4, 4, 4},
-		{4, 4, 1, 3, 3, 3, 1, 4, 4, 4},
-		{4, 4, 1, 0, 0, 0, 1, 1, 4, 4},
-		{4, 4, 1, 0, 0, 0, 0, 1, 4, 4},
-		{4, 4, 1, 0, 0, 0, 0, 1, 4, 4},
-		{4, 4, 1, 1, 1, 1, 1, 1, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4}};
+	int mapTwo[8][8] = {
+		{4, 4, 4, 4, 4, 4, 4, 4},
+		{4, 4, 1, 1, 1, 1, 1, 4},
+		{4, 4, 1, 0, 0, 0, 1, 4},
+		{4, 4, 1, 3, 3, 3, 1, 4},
+		{4, 4, 1, 0, 0, 0, 1, 1},
+		{4, 4, 1, 0, 0, 0, 0, 1},
+		{4, 4, 1, 0, 0, 0, 0, 1},
+		{4, 4, 1, 1, 1, 1, 1, 1}};
 
-	int mapThree[10][10] = {
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{4, 1, 1, 1, 1, 1, 1, 1, 1, 4},
-		{4, 1, 3, 0, 0, 0, 0, 0, 1, 4},
-		{4, 1, 0, 3, 0, 0, 0, 0, 1, 4},
-		{4, 1, 3, 0, 0, 0, 0, 0, 1, 4},
-		{4, 1, 1, 1, 1, 1, 0, 0, 1, 4},
-		{4, 4, 4, 4, 4, 1, 1, 1, 1, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4}};
+	int mapThree[8][8] = {
+		{4, 4, 4, 4, 4, 4, 4, 4},
+		{4, 4, 4, 4, 4, 4, 4, 4},
+		{4, 1, 1, 1, 1, 1, 1, 1},
+		{4, 1, 3, 0, 0, 0, 0, 0},
+		{4, 1, 0, 3, 0, 0, 0, 0},
+		{4, 1, 3, 0, 0, 0, 0, 0},
+		{4, 1, 1, 1, 1, 1, 0, 0},
+		{4, 4, 4, 4, 4, 1, 1, 1}};
 
 	Map map1(mapOne);
 	Map map2(mapTwo);
@@ -61,8 +55,8 @@ int main(int argc, char **argv)
 	WINDOW *win1; // Map1
 	WINDOW *win2; // Map2
 	WINDOW *win3; // Map3
-	WINDOW *win4; // step 횟수
-	WINDOW *win5; // push 횟수
+	WINDOW *win4; // count of Steps
+	WINDOW *win5; // count of Pushes
 	WINDOW *win6; // end
 
 	initscr();
@@ -93,16 +87,16 @@ int main(int argc, char **argv)
 
 	wrefresh(win1); // 화면 업데이트. win1 화면 실제 출력
 
-	// 박스랑 캐릭터 초기 위치 설정
+	// 박스와 캐릭터 초기 위치 설정
 	map1.setElement(3, 5, 2);
 	map1.setElement(4, 4, 2);
 	map1.setElement(5, 5, 2);
 	map1.setCharacter(2, 4);
 
 	// 처음 맵 출력
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			if (map1.map[i][j] == 0)
 			{
@@ -178,9 +172,9 @@ int main(int argc, char **argv)
 		{
 			map1.move(72); // 위
 			// 바뀔 때마다 맵 출력
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map1.map[i][j] == 0)
 					{
@@ -232,9 +226,9 @@ int main(int argc, char **argv)
 		else if (ch == KEY_LEFT)
 		{
 			map1.move(75); // 왼쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map1.map[i][j] == 0)
 					{
@@ -286,9 +280,9 @@ int main(int argc, char **argv)
 		else if (ch == KEY_RIGHT)
 		{
 			map1.move(77); // 오른쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map1.map[i][j] == 0)
 					{
@@ -340,9 +334,9 @@ int main(int argc, char **argv)
 		else if (ch == KEY_DOWN)
 		{
 			map1.move(80); // 아래
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map1.map[i][j] == 0)
 					{
@@ -393,7 +387,7 @@ int main(int argc, char **argv)
 		mvprintw(9, 30, "PUSH : %d", map1.numPush);
 	}
 
-	//두번째맵
+	// 두번째맵
 	getch();
 	mvprintw(1, 10, "             Level 2           ");
 	mvprintw(2, 1, "------------------------------------------------");
@@ -404,7 +398,7 @@ int main(int argc, char **argv)
 	wborder(win2, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 	wrefresh(win2); // 화면 업데이트. win2 화면 실제 출력
 
-	// 박스랑 캐릭터 초기 위치 설정
+	// 박스와 캐릭터 초기 위치 설정
 	map2.setElement(4, 3, 2);
 	map2.setElement(4, 4, 2);
 	map2.setElement(4, 5, 2);
@@ -414,9 +408,9 @@ int main(int argc, char **argv)
 	mvprintw(9, 12, "Step : %d ", map2.numStep);
 	mvprintw(9, 30, "PUSH : %d ", map2.numPush);
 	// 처음 맵 출력
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			if (map2.map[i][j] == 0)
 			{
@@ -469,15 +463,14 @@ int main(int argc, char **argv)
 	while (map2.numDest != map2.numBoxOnDest)
 	{
 		keypad(stdscr, true);
-		//PrintMap();
 		ch2 = getch();
 		if (ch2 == KEY_UP)
 		{
 			map2.move(72); // 위
 			// 바뀔 때마다 맵 출력
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map2.map[i][j] == 0)
 					{
@@ -529,9 +522,9 @@ int main(int argc, char **argv)
 		else if (ch2 == KEY_LEFT)
 		{
 			map2.move(75); // 왼쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map2.map[i][j] == 0)
 					{
@@ -583,9 +576,9 @@ int main(int argc, char **argv)
 		else if (ch2 == KEY_RIGHT)
 		{
 			map2.move(77); // 오른쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map2.map[i][j] == 0)
 					{
@@ -637,9 +630,9 @@ int main(int argc, char **argv)
 		else if (ch2 == KEY_DOWN)
 		{
 			map2.move(80); // 아래
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map2.map[i][j] == 0)
 					{
@@ -690,7 +683,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	//세번째맵
+	//세번째 맵
 	getch();
 	mvprintw(1, 10, "             Level 3           ");
 	mvprintw(2, 1, "------------------------------------------------");
@@ -702,7 +695,7 @@ int main(int argc, char **argv)
 	wborder(win3, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 	wrefresh(win3); // 화면 업데이트. win3 화면 실제 출력
 
-	// 박스랑 캐릭터 초기 위치 설정
+	// 박스와 캐릭터 초기 위치 설정
 	map3.setElement(4, 4, 2);
 	map3.setElement(4, 5, 2);
 	map3.setElement(4, 6, 2);
@@ -712,9 +705,9 @@ int main(int argc, char **argv)
 	mvprintw(9, 12, "Step : %d ", map3.numStep);
 	mvprintw(9, 30, "PUSH : %d ", map3.numPush);
 	// 처음 맵 출력
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			if (map3.map[i][j] == 0)
 			{
@@ -767,15 +760,14 @@ int main(int argc, char **argv)
 	while (map3.numDest != map3.numBoxOnDest)
 	{
 		keypad(stdscr, true);
-		//PrintMap();
 		ch3 = getch();
 		if (ch3 == KEY_UP)
 		{
 			map3.move(72); // 위
 			// 바뀔 때마다 맵 출력
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map3.map[i][j] == 0)
 					{
@@ -827,9 +819,9 @@ int main(int argc, char **argv)
 		else if (ch3 == KEY_LEFT)
 		{
 			map3.move(75); // 왼쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map3.map[i][j] == 0)
 					{
@@ -881,9 +873,9 @@ int main(int argc, char **argv)
 		else if (ch3 == KEY_RIGHT)
 		{
 			map3.move(77); // 오른쪽
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map3.map[i][j] == 0)
 					{
@@ -935,9 +927,9 @@ int main(int argc, char **argv)
 		else if (ch3 == KEY_DOWN)
 		{
 			map3.move(80); // 아래
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 8; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 8; j++)
 				{
 					if (map3.map[i][j] == 0)
 					{
@@ -1005,4 +997,5 @@ int main(int argc, char **argv)
 	endwin(); // end ncurses mode
 
 	return 0;
+
 } // main
