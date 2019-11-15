@@ -4,7 +4,6 @@
 class Movable
 {
 private:
-
 public:
     Movable(/* args */);
     ~Movable();

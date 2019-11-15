@@ -4,10 +4,10 @@
 class Wall : Space
 {
 private:
-
 public:
     Wall();
     Wall(int value, std::pair<int, int> position, int state);
     ~Wall();
 };
+
 #endif

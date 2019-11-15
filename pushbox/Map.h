@@ -1,7 +1,7 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#include<vector>
+#include <vector>
 #include "Space.h"
 #include "Character.h"
 #include "Destination.h"
@@ -20,11 +20,10 @@
 6 : Box on destination
 */
 
-class Map 
+class Map
 {
-private :
-
-public :
+private:
+public:
     //Constructor
     Map();
     //Constructor
@@ -34,9 +33,6 @@ public :
     void init();
     Map &setElement(Space element);
     void stateChanged();
-        
-
-
 };
 
 #endif

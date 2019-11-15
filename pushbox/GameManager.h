@@ -7,6 +7,7 @@ class GameManager
 {
 private:
     Map *map;
+
 public:
     GameManager();
     GameManager(Map *map);
@@ -15,4 +16,5 @@ public:
     void gameOver();
     void gameSuccess();
 };
+
 #endif
