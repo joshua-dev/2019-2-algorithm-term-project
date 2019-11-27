@@ -1,6 +1,6 @@
 #ifndef _SPACE_H_
 #define _SPACE_H_
-//Interface for map space
+// Interface for map space
 #include <map>
 
 class Space
