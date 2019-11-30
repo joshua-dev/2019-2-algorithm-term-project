@@ -2,10 +2,13 @@
 #define __MAP_H__
 
 #include <vector>
-#include "Character.h"
-#include "Destination.h"
-#include "Box.h"
-#include "Wall.h"
+
+#include "Object.cpp"
+#include "Character.cpp"
+#include "Destination.cpp"
+#include "Box.cpp"
+#include "Wall.cpp"
+
 
 //Interface for sokoban map and its logic
 
@@ -22,7 +25,8 @@
 class Map
 {
 private:
-    std::vector< std::vector<Space> > map(8, std::vector<Space>(8));
+    std::vector<std::vector<Space>> map(8, std::vector<Space>(8));
+
 public:
     //Constructor
     Map();

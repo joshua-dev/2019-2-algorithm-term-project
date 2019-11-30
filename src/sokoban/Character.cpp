@@ -1,9 +1,27 @@
 #include <map>
 #include "Character.h"
 
-Character::Character(int value, std::pair<int, int> position, int state, int step, int time) : Space(value, position)
+Character::Character() : Object()
 {
-    this->setState(state);
-    this->setStep(step);
-    this->setTime(time);
+}
+
+Character::Character(std::pair<int, int> position) : Object(position)
+{
+}
+
+Character &Character::doNothing()
+{
+    return *this;
+}
+
+Character &Character::stepCount()
+{
+    this->step++;
+    return *this;
+}
+
+Character &Character::pushCount()
+{
+    this->push++;
+    return *this;
 }
