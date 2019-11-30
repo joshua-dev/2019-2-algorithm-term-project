@@ -14,54 +14,85 @@ void GameViewer::startView(WINDOW* startMenu)
     startMenu = newwin(19,40,6,2);
 }
 
-void GameViewer::renderLevelBoard(WINDOW* levelBoard)
-{
-    mvwprintw(levelBoard, 1, 8, "%d", 1);
-    wrefresh(levelBoard);
-    return;
-}
-
 void GameViewer::renderStepBoard(WINDOW* stepBoard)
 {
-    mvwprintw(stepBoard, 1, 8, "%d", 2);
+    mvwprintw(stepBoard, 1, 7, "%d", map -> getStep());
     wrefresh(stepBoard);
     return;
 }
 
 void GameViewer::renderPushBoard(WINDOW* pushBoard)
 {
-    mvwprintw(pushBoard, 1, 8, "%d", 3);
+    mvwprintw(pushBoard, 1, 7, "%d", map -> getPush());
     wrefresh(pushBoard);
     return;
 }
 
-void GameViewer::renderTimeBoard(WINDOW* timeBoard)
-{
-    mvwprintw(timeBoard, 1, 8, "%d", 4);
-    wrefresh(timeBoard);
-    return;
-}
-
 void GameViewer::renderGameBoard(WINDOW* gameBoard)
-{
+{  
+    map -> findCharacter();
 
+    int ux = map -> getUser_posX();
+    int uy = map -> getUser_posY();
+    map -> setElement(ux, uy, CHARACTER);
+    
+   for(int i = 0; i < 8; i++)
+   {
+       for(int j = 0; j < 8; j++)
+       {
+           switch (map -> getElement(i, j))
+           {
+           case SPACE:
+                attron(COLOR_PAIR(0));
+			    mvprintw(17 + i, 20 + j, " ");
+				attroff(COLOR_PAIR(0));
+                break;
+            case WALL:
+                attron(COLOR_PAIR(1));
+				mvprintw(17 + i, 20 + j, " ");
+				attroff(COLOR_PAIR(1));
+                break;
+            case BOX:
+                attron(COLOR_PAIR(2));
+				mvprintw(17 + i, 20 + j, "\u2752");
+				attroff(COLOR_PAIR(2));
+                break;
+            case DESTINATION:
+                attron(COLOR_PAIR(3));
+				mvprintw(17 + i, 20 + j, "\u2B1A");
+				attroff(COLOR_PAIR(3));
+                break;
+            case OUTSIDE:
+                attron(COLOR_PAIR(4));
+				mvprintw(17 + i, 20 + j, " ");
+				attroff(COLOR_PAIR(4));
+                break;
+            case CHARACTER:
+                attron(COLOR_PAIR(4));
+				mvprintw(17 + i, 20 + j, "C");
+				attroff(COLOR_PAIR(4));
+                break;
+            case BOXONDESTINATION:
+                attron(COLOR_PAIR(5));
+				mvprintw(17 + i, 20 + j, "\u2752");
+				attroff(COLOR_PAIR(5));
+                break;
+           }
+       }
+   }
 }
 
-void GameViewer::renderAll(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* timeBoard, WINDOW* gameBoard)
+void GameViewer::renderAll(WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* gameBoard)
 {
-    renderLevelBoard(levelBoard);
     renderStepBoard(stepBoard);
     renderPushBoard(pushBoard);
-    renderTimeBoard(timeBoard);
     renderGameBoard(gameBoard);
 }
 
-void GameViewer::renderInit(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* timeBoard)
+void GameViewer::renderInit(WINDOW* stepBoard, WINDOW* pushBoard)
 {
-    mvwprintw(levelBoard, 1, 8, "   ");
     mvwprintw(stepBoard, 1, 8, "    ");
     mvwprintw(pushBoard, 1, 8, "    ");
-    mvwprintw(timeBoard, 1, 8, "    ");
 }
 
 void GameViewer::renderResult()
@@ -75,11 +106,9 @@ void GameViewer::renderResult()
         step = 1;
         push = 1;
         reset = 1;
-        score -= step * 649 + push * 2646 + reset * 47332;
-        mvprintw(5 + i * 2, 9, "Level %d", i + 1);
+        score -= step * 649 + push * 2646;
         mvprintw(5 + i * 2, 24, "Step %d", step);
         mvprintw(5 + i * 2, 34, "Push %d", push);
-        mvprintw(5 + i * 2, 44, "Reset %d", reset);
     }
 
     if(score < 0) score = 0;

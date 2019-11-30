@@ -1,42 +1,44 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
+#include "Definition.h"
 #include <vector>
-
-#include "Object.cpp"
-#include "Character.cpp"
-#include "Destination.cpp"
-#include "Box.cpp"
-#include "Wall.cpp"
-
-
-//Interface for sokoban map and its logic
-
-/*
-0 : Null space
-1 : Wall
-2 : Box
-3 : Destination
-4 : Outside
-5 : Character
-6 : Box on destination
-*/
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<map>
+#include "ncurses.h"
 
 class Map
 {
 private:
-    std::vector<std::vector<Object>> map [8][8];
-
+    int numDest;
+    int numBoxOnDest;
+    int map[8][8];
+    int default_map[8][8];
+    int locOfCharacter[2];
+    int numStep;
+    int numPush;
 public:
-    //Constructor
     Map();
-    //Constructor
-    Map(std::vector<std::vector<Object>> map);
 
-    //member function
-    Map &init();
-    Map &setElement(Object &element);
-    void stateChanged();
+    //Member Function
+    void setElement(int x, int y, int input);
+    int getElement(int x, int y);
+    void setCharacter(int x, int y);
+    void setLocOfCharacter(int x, int y);
+    void findCharacter();
+    void countBoxOnDest();
+    void increaseNumStep();
+    void increaseNumPush();
+
+    //getter
+    int getStep();
+    int getPush();
+    int getUser_posX();
+    int getUser_posY(); 
+
 };
+
 
 #endif
