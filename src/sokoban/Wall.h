@@ -1,12 +1,15 @@
 #ifndef _WALL_H_
 #define _WALL_H_
 
-class Wall : Space
+#include<map>
+#include "Object.h"
+
+class Wall : Object
 {
 private:
 public:
     Wall();
-    Wall(int value, std::pair<int, int> position, int state);
+    Wall(std::pair<int, int> position);
     ~Wall();
 };
 
