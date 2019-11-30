@@ -2,11 +2,13 @@
 #define __MAP_H__
 
 #include <vector>
+
 #include "Object.cpp"
 #include "Character.cpp"
 #include "Destination.cpp"
 #include "Box.cpp"
 #include "Wall.cpp"
+
 
 //Interface for sokoban map and its logic
 

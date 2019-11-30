@@ -4,6 +4,7 @@
 #include <map>
 
 // Interface for map objects
+#include<map>
 
 class Object
 {
