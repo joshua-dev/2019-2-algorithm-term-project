@@ -1,8 +1,8 @@
 #ifndef _BOX_H_
 #define _BOX_H_
 
+#include "Object.h"
 #include "Movable.h"
-#include <Object.cpp>
 #include <map>
 
 class Box : Object
@@ -10,21 +10,17 @@ class Box : Object
 private:
     int value = 2;
     std::pair<int, int> position;
+    bool onDest = false;
 
 public:
-    // Default Constructor
-    Box();
-
     // Overloaded Constructor
-    Box(std::pair<int, int> position, int state);
+    Box(std::pair<int, int> position);
 
     //Default Destructor
     ~Box();
 
-    bool onLeft();
-    bool onRight();
-    bool onUp();
-    bool onDown();
+    Box &arrive();
+    Box &setValue();
 };
 
 #endif

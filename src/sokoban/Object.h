@@ -12,14 +12,17 @@ protected:
     std::pair<int, int> position;
 
 public:
-    /** constructor */
-    Object(int value, std::pair<int, int> position);
+    // Default Constructor
+    Object();
+
+    // Overloaded Constructor
+    Object(std::pair<int, int> position, int value = 0);
 
     int getValue();
-    void setValue(int value);
+    Object &setValue(int value);
 
     std::pair<int, int> getPosition();
-    void setPosition(std::pair<int, int>);
+    Object &setPosition(std::pair<int, int>);
 
     friend class Box;
     friend class Character;
