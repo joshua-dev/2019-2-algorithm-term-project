@@ -23,15 +23,16 @@
 class Map
 {
 private:
+    std::vector< std::vector<Space> > map(8, std::vector<Space>(8));
 public:
     //Constructor
     Map();
     //Constructor
-    Map(std::vector<Space> map);
+    Map(std::vector<std::vector<Space>> map);
 
     //member function
-    void init();
-    Map &setElement(Space element);
+    Map &init();
+    Map &setElement(Space &element);
     void stateChanged();
 };
 
