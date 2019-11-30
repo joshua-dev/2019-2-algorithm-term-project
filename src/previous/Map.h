@@ -21,7 +21,7 @@ public:
     // Default Constructor
     Map();
 
-    // Copy Constructor
+    // @Overload
     Map(int map_of_stage[8][8]);
 
     // Member Functions

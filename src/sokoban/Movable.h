@@ -5,10 +5,13 @@
 
 class Movable
 {
-private:
 public:
+    /** constructor */
     Movable(/* args */);
+
+    /** destructor */
     ~Movable();
+
     virtual void moveLeft();
     virtual void moveRight();
     virtual void moveUp();
