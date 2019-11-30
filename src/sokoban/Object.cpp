@@ -6,6 +6,7 @@ Object::Object() : position(std::pair(0, 0))
 }
 
 Object::Object(std::pair<int, int> position, int value = 0) : position(position), value(value)
+
 {
 }
 

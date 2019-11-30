@@ -3,11 +3,11 @@
 
 #include <vector>
 
-#include "Object.h"
-#include "Character.h"
-#include "Destination.h"
-#include "Box.h"
-#include "Wall.h"
+#include "Object.cpp"
+#include "Character.cpp"
+#include "Destination.cpp"
+#include "Box.cpp"
+#include "Wall.cpp"
 
 
 //Interface for sokoban map and its logic
