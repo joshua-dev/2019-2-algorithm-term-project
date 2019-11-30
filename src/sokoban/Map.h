@@ -25,7 +25,7 @@
 class Map
 {
 private:
-    std::vector<std::vector<Object>> map[8][8];
+    std::vector<std::vector<Object>> map [8][8];
 
 public:
     //Constructor

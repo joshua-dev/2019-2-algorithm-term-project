@@ -13,11 +13,13 @@ protected:
     std::pair<int, int> position;
 
 public:
+
     // Default Constructor
     Object();
 
     // Overloaded Constructor
     Object(std::pair<int, int> position, int value = 0);
+
 
     int getValue();
     Object &setValue(int value);

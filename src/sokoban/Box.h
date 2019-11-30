@@ -1,8 +1,8 @@
 #ifndef _BOX_H_
 #define _BOX_H_
 
+
 #include "Object.h"
-#include "Movable.h"
 #include <map>
 
 

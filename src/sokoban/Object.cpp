@@ -17,6 +17,7 @@ int Object::getValue()
 
 
 Object &Object::setValue(int value)
+
 {
     this->value = value;
     return *this;
@@ -29,6 +30,7 @@ std::pair<int, int> Object::getPosition()
 
 
 Object &Object::setPosition(std::pair<int, int> position)
+
 {
     this->position = position;
     return *this;
