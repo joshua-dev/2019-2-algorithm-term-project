@@ -1,4 +1,4 @@
-#include "Space.h"
+#include "Object.h"
 
 Space::Space(int value, std::pair<int, int> position)
 {

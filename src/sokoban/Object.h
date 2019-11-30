@@ -1,11 +1,9 @@
-#ifndef _SPACE_H_
-#define _SPACE_H_
+#ifndef _OBJECT_H_
+#define _OBJECT_H_
 
-// Interface for map space
+// Interface for map objects
 
-#include <map>
-
-class Space
+class Object
 {
 private:
     int value;
