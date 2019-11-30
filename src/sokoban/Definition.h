@@ -1,20 +1,31 @@
-/*
-0 : Null space
-1 : Wall
-2 : Box
-3 : Destination
-4 : Outside
-5 : Character
-6 : Box on destination
-*/
+#ifndef _DEFINITION_H_
+#define _DEFINITION_H_
+
+#include <locale.h>
+
+struct Coordinates
+{
+	int x, y;
+	Coordinates()
+	{
+		this->x = 0;
+		this->y = 0;
+	}
+	Coordinates(int a, int b)
+	{
+		this->x = a;
+		this->y = b;
+	}
+};
 
 enum
 {
-    SPACE = 0,
-    WALL,
-    BOX,
-    DESTINATION,
-    OUTSIDE,
-    CHARACTER,
-    BOXONDESTINATION
+	EMPTY = 0,
+	WALL,
+	BOX,
+	GOAL,
+	BOUND,
+	PLAYER
 };
+
+#endif

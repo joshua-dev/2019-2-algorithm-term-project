@@ -13,7 +13,7 @@ using namespace std;
 class PushBox
 {
 private:
-	char** map;
+	char **map;
 	int rowMax = 10;
 	int colMax = 10;
 	int level = 1;
@@ -22,22 +22,26 @@ private:
 	int reset = 0;
 	Coordinates userPosition;
 	vector<Coordinates> goalList;
-	vector<vector<int> > records;
+	vector<vector<int>> records;
 
 public:
-	PushBox() {
+	PushBox()
+	{
 		ifstream in;
 		in.open("level1.txt");
 		in >> userPosition.x >> userPosition.y;
 
-		map = new char* [rowMax];
-		for (int i = 0; i < rowMax; i++) {
+		map = new char *[rowMax];
+		for (int i = 0; i < rowMax; i++)
+		{
 			int temp;
 			map[i] = new char[colMax];
-			for (int j = 0; j < colMax; j++) {
+			for (int j = 0; j < colMax; j++)
+			{
 				in >> temp;
 				map[i][j] = temp;
-				if (temp == 3) {
+				if (temp == 3)
+				{
 					goalList.push_back(Coordinates(j, i));
 				}
 			}
@@ -47,7 +51,7 @@ public:
 	{
 		return level;
 	}
-	void setLevel(const int& input)
+	void setLevel(const int &input)
 	{
 		this->level = input;
 		return;
@@ -56,7 +60,7 @@ public:
 	{
 		return userPosition;
 	}
-	void setUserPos(const Coordinates& input)
+	void setUserPos(const Coordinates &input)
 	{
 		userPosition.x = input.x;
 		userPosition.y = input.y;
@@ -101,11 +105,11 @@ public:
 	{
 		reset = 0;
 	}
-	void setX_userPos(const int& input)
+	void setX_userPos(const int &input)
 	{
 		this->userPosition.x = input;
 	}
-	void setY_userPos(const int& input)
+	void setY_userPos(const int &input)
 	{
 		this->userPosition.y = input;
 	}
@@ -117,22 +121,28 @@ public:
 	{
 		return userPosition.y;
 	}
-	int getRow() {
+	int getRow()
+	{
 		return rowMax;
 	}
-	int getCol() {
+	int getCol()
+	{
 		return colMax;
 	}
-	vector<Coordinates> getGoalList() {
+	vector<Coordinates> getGoalList()
+	{
 		return goalList;
 	}
-	vector<vector<int> > getRecords() {
+	vector<vector<int>> getRecords()
+	{
 		return records;
 	}
-	void addRecords(vector<int> input) {
+	void addRecords(vector<int> input)
+	{
 		records.push_back(input);
 	}
-	void clearRecords() {
+	void clearRecords()
+	{
 		records.clear();
 	}
 	void readMap()
@@ -145,19 +155,22 @@ public:
 		in >> userPosition.x >> userPosition.y;
 
 		goalList.clear();
-		for (int i = 0; i < rowMax; i++) {
+		for (int i = 0; i < rowMax; i++)
+		{
 			int temp;
-			for (int j = 0; j < colMax; j++) {
+			for (int j = 0; j < colMax; j++)
+			{
 				in >> temp;
 				map[i][j] = temp;
-				if (temp == 3) {
+				if (temp == 3)
+				{
 					goalList.push_back(Coordinates(j, i));
 				}
 			}
 		}
 		return;
 	}
-	void setMap(const Coordinates& i, const char& c)
+	void setMap(const Coordinates &i, const char &c)
 	{
 		this->map[i.x][i.y] = c;
 	}

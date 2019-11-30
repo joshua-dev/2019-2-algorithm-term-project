@@ -1,27 +1,36 @@
 #ifndef _GAMECONTROLLER_H_
 #define _GAMECONTROLLER_H_
 
-#include "Map.h"
-#include "Definition.h"
 #include "GameViewer.h"
 
 class GameController
 {
-private:
-    Map* map;
-    GameViewer* gameViewer;
 public:
-    GameController(Map* map, GameViewer* gameViewer);
-    void setGoalPos(int x, int y);
-    void gameInitialize();
-    void gameDelete();
-    bool isInMapNow();
-    bool isInMapNow(int x, int y);
-    bool checkPosition(int ux, int uy);
-    void move(int x, int y);
-    void startGame();
+	GameController(){};
+	GameController(PushBox *model, GameViewer *view)
+	{
+		pushBox = model;
+		gameViewer = view;
+	}
+	void setGoalPos(vector<Coordinates> goalposition);
+	void gameInitialize();
+	void gameDelete();
+	bool IsinMapNow();
+	bool IsinMapNow(int dy, int dx);
+	bool CheckPosition(Coordinates userPos);
+	void move(Coordinates userPos);
+	bool postProcessing();
+	bool isSuccess();
+	WINDOW *levelBoard, *stepBoard, *pushBoard, *resetBoard, *gameBoard;
+	void goNextLevel();
+	void reset();
+	void startGame();
+	bool showResult();
 
-    WINDOW* stepBoard, *pushBoard, *gameBoard;
-
+private:
+	const int FINALLEVEL = 5;
+	PushBox *pushBox;
+	GameViewer *gameViewer;
 };
+
 #endif

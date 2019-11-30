@@ -1,122 +1,286 @@
 #include "GameController.h"
 
-GameController::GameController(Map* map, GameViewer* gameViewer)
-{
-    this -> map = map;
-    this -> gameViewer = gameViewer;
-}
-
-void GameController::setGoalPos(int x, int y)
-{
-
-}
-
 void GameController::gameInitialize()
 {
-    initscr();
-	resize_term(40, 50);
+	setlocale(LC_ALL, "");
+	initscr();
+	resize_term(27, 65);
 	start_color();
-	init_pair(10, COLOR_BLACK, COLOR_WHITE);
-	init_pair(0, COLOR_BLACK, COLOR_BLUE);
-	init_pair(1, COLOR_BLACK, COLOR_GREEN);
-	init_pair(2, COLOR_YELLOW, COLOR_BLACK);
-	init_pair(3, COLOR_WHITE, COLOR_BLACK);
-	init_pair(4, COLOR_BLACK, COLOR_WHITE);
-	init_pair(5, COLOR_RED, COLOR_BLACK);
-
-    border('|', '|', '-', '-', '+', '+', '+', '+');
-	mvprintw(1, 9, "Welcome To The Push Box Game!");
-	mvprintw(2, 12, "Press Any Key To Start");
-	refresh(); // 화면 업데이트. 화면 실제 출력
 	curs_set(0);
-    getch();
+	noecho();
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);   //EMPTY color
+	init_pair(3, COLOR_WHITE, COLOR_MAGENTA); //BLOCK color
+	init_pair(4, COLOR_WHITE, COLOR_YELLOW);  //BOX color
+	init_pair(5, COLOR_WHITE, COLOR_GREEN);   //GOAL color
+	init_pair(6, COLOR_WHITE, COLOR_RED);	 //PLAYER color
+	init_pair(7, COLOR_WHITE, COLOR_CYAN);	//Start menu color
+	init_pair(8, COLOR_RED, COLOR_BLACK);	 //result color
 
-    startGame();
+	attron(COLOR_PAIR(7));
+	mvprintw(6, 18, "                               ");
+	mvprintw(7, 18, "  P U S H    B O X    G A M E  ");
+	mvprintw(8, 18, "                               ");
+	attroff(COLOR_PAIR(7));
+	attron(COLOR_PAIR(6));
+	mvprintw(12, 28, "          ");
+	mvprintw(13, 28, "   |  |   ");
+	mvprintw(14, 28, "          ");
+	mvprintw(15, 28, "          ");
+	attroff(COLOR_PAIR(6));
+
+	mvprintw(19, 24, "Press \'S\' to start");
+
+	while (1)
+	{
+		char temp = getch();
+		if (temp != 's' && temp != 'S')
+		{
+			continue;
+		}
+		else
+			break;
+	}
+	clear();
+	startGame();
 }
 
-void gameDelete()
+void GameController::gameDelete()
 {
-
+	delwin(levelBoard);
+	delwin(stepBoard);
+	delwin(pushBoard);
+	delwin(resetBoard);
+	delwin(gameBoard);
+	endwin();
+	return;
 }
 
-bool isInMapNow()
+bool GameController::IsinMapNow()
 {
-
+	if (pushBox->getX_userPos() < pushBox->getRow() && pushBox->getX_userPos() > 0 &&
+		pushBox->getY_userPos() < pushBox->getCol() && pushBox->getY_userPos() > 0)
+	{
+		return true;
+	}
+	return false;
+}
+bool GameController::IsinMapNow(int dy, int dx)
+{
+	if ((dx < pushBox->getCol() && dx > 0 && dy < pushBox->getCol() && dy > 0))
+	{
+		return true;
+	}
+	return false;
 }
 
-bool isInMapNow(int x, int y)
+bool GameController::CheckPosition(Coordinates userposition)
 {
+	if (!IsinMapNow())
+	{
+		return false;
+	}
 
+	int dx = pushBox->getX_userPos() + userposition.x;
+	int dy = pushBox->getY_userPos() + userposition.y;
+
+	if (!IsinMapNow(dy, dx))
+	{
+		return false;
+	};
+
+	if (pushBox->getMap(dy, dx) == 1)
+	{
+		return false;
+	}
+	return true;
 }
 
-bool checkPosition(int ux, int uy)
+void GameController::setGoalPos(vector<Coordinates> goalList)
 {
+	for (int i = 0; i < goalList.size(); i++)
+	{
+		int goalX = goalList[i].x;
+		int goalY = goalList[i].y;
 
+		if (pushBox->getMap(goalY, goalX) == EMPTY)
+		{
+			pushBox->setMap(Coordinates(goalY, goalX), GOAL);
+		}
+	}
+}
+void GameController::move(Coordinates userposition)
+{
+	pushBox->addStep();
+
+	int curX = pushBox->getX_userPos();
+	int curY = pushBox->getY_userPos();
+
+	int nextX = curX + userposition.x;
+	int nextY = curY + userposition.y;
+
+	if (pushBox->getMap(nextY, nextX) == WALL)
+	{
+		return;
+	}
+
+	//BOX를 밀때
+	if (pushBox->getMap(nextY, nextX) == BOX)
+	{
+		int nextPosBox_X = nextX + userposition.x;
+		int nextPosBox_Y = nextY + userposition.y;
+
+		if (pushBox->getMap(nextPosBox_Y, nextPosBox_X) == BOX || pushBox->getMap(nextPosBox_Y, nextPosBox_X) == WALL)
+		{
+			return;
+		}
+
+		pushBox->setMap(Coordinates(curY, curX), EMPTY);
+		pushBox->setMap(Coordinates(nextY, nextX), PLAYER);
+		pushBox->setMap(Coordinates(nextPosBox_Y, nextPosBox_X), BOX);
+		pushBox->setUserPos(Coordinates(nextX, nextY));
+		pushBox->addPush();
+		return;
+	}
+	pushBox->setMap(Coordinates(curY, curX), EMPTY);
+	pushBox->setMap(Coordinates(nextY, nextX), PLAYER);
+	pushBox->setUserPos(Coordinates(nextX, nextY));
 }
 
-void GameController::move(int x, int y)
+bool GameController::postProcessing()
 {
-    map -> increaseNumStep();
+	setGoalPos(pushBox->getGoalList());
+	gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 
-    //캐릭터 방향에 비어있거나 목적지이면 캐릭터 이동
-    int ux = map -> getUser_posX();
-    int uy = map -> getUser_posY();
+	if (isSuccess())
+	{
+		vector<int> rec;
+		rec.push_back(pushBox->getStep());
+		rec.push_back(pushBox->getPush());
+		rec.push_back(pushBox->getReset());
+		pushBox->addRecords(rec);
+		if (pushBox->getLevel() == FINALLEVEL)
+		{
+			return showResult();
+		}
+		else
+		{
+			pushBox->setLevel(pushBox->getLevel() + 1);
+			pushBox->stepClear();
+			pushBox->pushClear();
+			pushBox->resetClear();
+			pushBox->readMap();
+			gameViewer->renderInit(levelBoard, stepBoard, pushBoard, resetBoard);
+			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
+		}
+	}
+	return false;
+}
 
-    int nextX = ux + x;
-    int nextY = uy + y;
+bool GameController::isSuccess()
+{
+	for (int i = 0; i < pushBox->getGoalList().size(); i++)
+	{
+		int x = pushBox->getGoalList()[i].x;
+		int y = pushBox->getGoalList()[i].y;
+		if (pushBox->getMap(y, x) == 2)
+		{
+			continue;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return true;
+}
+void GameController::goNextLevel()
+{
+	for (int i = 0; i < pushBox->getGoalList().size(); i++)
+	{
+		int x = pushBox->getGoalList()[i].x;
+		int y = pushBox->getGoalList()[i].y;
+		pushBox->setMap(Coordinates(y, x), 2);
+	}
+	return;
+}
 
-    //캐릭터가 움직이는 방향이 벽일 경우
-    if(map -> getElement(nextX, nextY) == WALL)
-    {
-        return;
-    }
-
-    //Box를 밀때
-    if(map -> getElement(nextX, nextY) == BOX)
-    {
-        int nextPosBox_X = nextX + x;
-        int nextPosBox_Y = nextY + y;
-
-        if(map -> getElement(nextPosBox_X, nextPosBox_Y) == BOX ||
-            map -> getElement(nextPosBox_X, nextPosBox_Y) == WALL)
-            {
-                return;
-            }
-        map -> setElement(ux, uy, SPACE);
-        map -> setElement(nextX, nextY, CHARACTER);
-        map -> setElement(nextPosBox_X, nextPosBox_Y, BOX);
-        map -> setLocOfCharacter(nextX, nextY);
-        map -> increaseNumPush();
-        return;
-    }
-
-    map -> setElement(ux, uy, SPACE);
-    map -> setElement(nextX, nextY, CHARACTER);
-    map -> setLocOfCharacter(nextX, nextY);
+void GameController::reset()
+{
+	pushBox->stepClear();
+	pushBox->pushClear();
+	pushBox->readMap();
+	gameViewer->renderInit(levelBoard, stepBoard, pushBoard, resetBoard);
+	gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
+	pushBox->addReset();
+	return;
 }
 
 void GameController::startGame()
 {
-    mvprintw(3, 18, "P U S H    B O X    G A M E");
+	mvprintw(3, 18, "P U S H    B O X    G A M E");
+	mvprintw(24, 23, "Press \'r\' to reset ");
 	refresh();
 
-    gameBoard = newwin(12, 12, 16, 19);
-    wbkgd(gameBoard, COLOR_PAIR(10));
-    wattron(gameBoard, COLOR_PAIR(10));
-    wborder(gameBoard, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-    wrefresh(gameBoard);
+	gameBoard = newwin(15, 38, 8, 4);
+	levelBoard = newwin(3, 13, 8, 45);
+	stepBoard = newwin(3, 13, 12, 45);
+	pushBoard = newwin(3, 13, 16, 45);
+	resetBoard = newwin(3, 13, 20, 45);
+	wbkgd(levelBoard, COLOR_PAIR(1));
+	wattron(levelBoard, COLOR_PAIR(1));
+	wbkgd(stepBoard, COLOR_PAIR(1));
+	wattron(stepBoard, COLOR_PAIR(1));
+	wbkgd(pushBoard, COLOR_PAIR(1));
+	wattron(pushBoard, COLOR_PAIR(1));
+	wbkgd(resetBoard, COLOR_PAIR(1));
+	wattron(resetBoard, COLOR_PAIR(1));
 
-    stepBoard = newwin(5, 14, 7, 9);
-    wbkgd(stepBoard, COLOR_PAIR(3));
-    wattron(stepBoard, COLOR_PAIR(3));
-    mvprintw(1, 1, "Step: ");
-    wborder(stepBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	mvwprintw(levelBoard, 1, 1, "Level: ");
+	mvwprintw(levelBoard, 1, 8, " ");
+	mvwprintw(stepBoard, 1, 1, "Move: ");
+	mvwprintw(stepBoard, 1, 8, " ");
+	mvwprintw(pushBoard, 1, 1, "Push: ");
+	mvwprintw(pushBoard, 1, 8, " ");
+	mvwprintw(resetBoard, 1, 1, "Reset: ");
+	mvwprintw(resetBoard, 1, 8, " ");
+	wborder(levelBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(stepBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(pushBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(resetBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(gameBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+
+	wrefresh(levelBoard);
 	wrefresh(stepBoard);
-
-    pushBoard = newwin(5, 14, 7, 27);
-    wbkgd(pushBoard, COLOR_PAIR(3));
-    wattron(pushBoard, COLOR_PAIR(3));
-    mvwprintw(pushBoard, 1, 1, "PUSH: ");
-    wborder(pushBoard, '|', '|', '-', '-', '+', '+', '+', '+');
 	wrefresh(pushBoard);
+	wrefresh(resetBoard);
+	wrefresh(gameBoard);
+}
+bool GameController::showResult()
+{
+	clear();
+	gameViewer->renderResult();
+	while (1)
+	{
+		char t = getch();
+		if (t == 'q' || t == 'Q')
+		{
+			return true;
+		}
+		else if (t == 'n' || t == 'N')
+		{
+			pushBox->setLevel(1);
+			pushBox->clearRecords();
+			pushBox->resetClear();
+			pushBox->readMap();
+			clear();
+			startGame();
+			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
+			return false;
+		}
+		else
+		{
+			continue;
+		}
+	}
 }
