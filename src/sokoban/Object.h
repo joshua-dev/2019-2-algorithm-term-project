@@ -1,6 +1,8 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
+#include <map>
+
 // Interface for map objects
 #include<map>
 
@@ -11,15 +13,24 @@ protected:
     std::pair<int, int> position;
 
 public:
-    /** constructor */
+
+    // Default Constructor
     Object();
-    Object(int value, std::pair<int, int> position);
+
+    // Overloaded Constructor
+    Object(std::pair<int, int> position, int value = 0);
+
 
     int getValue();
-    void setValue(int value);
+    Object &setValue(int value);
 
     std::pair<int, int> getPosition();
-    void setPosition(std::pair<int, int>);
+    Object &setPosition(std::pair<int, int>);
+
+    friend class Box;
+    friend class Character;
+    friend class Destination;
+    friend class Wall;
 };
 
 #endif

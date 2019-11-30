@@ -1,26 +1,25 @@
 #ifndef _CHARACTER_H_
 #define _CHARACTER_H_
 
-#include "Movable.h"
+#include "Object.cpp"
+#include <map>
 
 class Character : Object
 {
 private:
-    int state;
-    int step;
-    int time;
-    Movable *movable;
+    int step = 0, push = 0;
+    int value = 5;
 
 public:
+    // Default Constructor
     Character();
-    Character(int value, std::pair<int, int> position, int state, int step, int time);
-    void doNothing();
-    int getState();
-    int getStep();
-    int getTime();
-    void setState(int state);
-    void setStep(int step);
-    void setTime(int time);
+
+    // Overloaded Constructor
+    Character(std::pair<int, int> position);
+
+    Character &doNothing();
+    Character &stepCount();
+    Character &pushCount();
 };
 
 #endif

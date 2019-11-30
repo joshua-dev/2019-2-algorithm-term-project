@@ -1,13 +1,12 @@
 #include "Object.h"
 
-Object::Object()
+
+Object::Object() : position(std::pair(0, 0))
 {
-    value = 0;
 }
-Object::Object(int value, std::pair<int, int> position)
+
+Object::Object(std::pair<int, int> position, int value = 0) : position(position), value(value)
 {
-    this->value = value;
-    this->position = position;
 }
 
 int Object::getValue()
@@ -15,9 +14,12 @@ int Object::getValue()
     return this->value;
 }
 
-void Object::setValue(int value)
+
+Object &Object::setValue(int value)
+
 {
     this->value = value;
+    return *this;
 }
 
 std::pair<int, int> Object::getPosition()
@@ -25,7 +27,10 @@ std::pair<int, int> Object::getPosition()
     return this->position;
 }
 
-void Object::setPosition(std::pair<int, int> position)
+
+Object &Object::setPosition(std::pair<int, int> position)
+
 {
     this->position = position;
+    return *this;
 }
