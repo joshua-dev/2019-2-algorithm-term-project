@@ -2,22 +2,25 @@
 #define _BOX_H_
 
 #include "Movable.h"
-#include<map>
+#include <Object.cpp>
+#include <map>
 
-class Box : Space
+class Box : Object
 {
 private:
-    int value;
+    int value = 2;
     std::pair<int, int> position;
-    Movable moveBehavior;
 
 public:
-    //Default Constructor
+    // Default Constructor
     Box();
-    Box(int value, std::pair<int, int> position, int state);
+
+    // Overloaded Constructor
+    Box(std::pair<int, int> position, int state);
+
     //Default Destructor
     ~Box();
-    //박스 옆이 빈 공간이라면 움직인다.
+
     bool onLeft();
     bool onRight();
     bool onUp();
