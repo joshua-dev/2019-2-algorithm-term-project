@@ -2,16 +2,18 @@
 #define _OBJECT_H_
 
 // Interface for map objects
+#include<map>
 
 class Object
 {
-private:
-    int value;
+protected:
+    int value = 0;
     std::pair<int, int> position;
 
 public:
     /** constructor */
-    Space(int value, std::pair<int, int> position);
+    Object();
+    Object(int value, std::pair<int, int> position);
 
     int getValue();
     void setValue(int value);

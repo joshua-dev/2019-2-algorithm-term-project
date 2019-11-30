@@ -1,10 +1,9 @@
 #ifndef _BOX_H_
 #define _BOX_H_
 
-#include "Movable.h"
 #include<map>
 
-class Box : Space
+class Box : Object
 {
 private:
     int value;

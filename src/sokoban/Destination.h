@@ -1,7 +1,7 @@
 #ifndef _DESTINATION_H_
 #define _DESTINATION_H_
 
-class Destination : Space
+class Destination : Object
 {
 private:
 public:

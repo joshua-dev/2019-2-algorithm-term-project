@@ -2,7 +2,6 @@
 #define __MAP_H__
 
 #include <vector>
-#include "Space.h"
 #include "Character.h"
 #include "Destination.h"
 #include "Box.h"

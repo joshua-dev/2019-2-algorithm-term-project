@@ -1,10 +1,9 @@
 #ifndef _CHARACTER_H_
 #define _CHARACTER_H_
 
-#include "Space.h"
 #include "Movable.h"
 
-class Character : Space
+class Character : Object
 {
 private:
     int state;
