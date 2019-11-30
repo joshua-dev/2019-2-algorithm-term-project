@@ -6,7 +6,7 @@
 
 - [ ] Sokoban game implementation
 
-- [ ] Interface Design
+- [x] Interface Design
 - [ ] Highest Level Class Definition
 - [ ] Sub-Class Implementation
 - [ ] Utility Class (Game Manager) Implementation
