@@ -36,6 +36,3 @@
 
 # Mac OS X
 .DS_Store
-
-# make
-Makefile
