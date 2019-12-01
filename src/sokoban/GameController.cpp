@@ -206,6 +206,7 @@ void GameController::startGame()
 {
 	mvprintw(3, 18, "P U S H    B O X    G A M E");
 	mvprintw(24, 23, "Press \'r\' to reset ");
+	mvprintw(26, 23, "Press \'a\' to auto-resolve ");
 	refresh();
 
 	gameBoard = newwin(15, 38, 8, 4);
@@ -268,4 +269,9 @@ bool GameController::showResult()
 		else
 			continue;
 	}
+}
+
+void GameController::autoResolve()
+{
+	return;
 }

@@ -33,6 +33,9 @@ int main()
 		case 'R':
 			gameController.reset();
 			break;
+		case 'a':
+		case 'A':
+			gameController.autoResolve();
 		case 'q':
 		case 'Q':
 			goto end;

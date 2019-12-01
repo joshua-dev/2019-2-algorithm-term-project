@@ -27,6 +27,7 @@ public:
 	WINDOW *levelBoard, *stepBoard, *pushBoard, *resetBoard, *gameBoard;
 	void goNextLevel();
 	void reset();
+	void autoResolve();
 	void startGame();
 	bool showResult();
 
