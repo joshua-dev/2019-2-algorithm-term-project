@@ -9,7 +9,7 @@ public:
 	GameViewer(){};
 	GameViewer(PushBox *model)
 	{
-		PushBox = model;
+		pushBox = model;
 	}
 	void startview(WINDOW *startMenu)
 	{
@@ -18,41 +18,41 @@ public:
 	}
 	void renderLevelBoard(WINDOW *levelBoard)
 	{
-		mvwprintw(levelBoard, 1, 8, "%d", PushBox->getLevel());
+		mvwprintw(levelBoard, 1, 8, "%d", pushBox->getLevel());
 		wrefresh(levelBoard);
 		return;
 	}
 	void renderStepBoard(WINDOW *stepBoard)
 	{
-		mvwprintw(stepBoard, 1, 8, "%d", PushBox->getStep());
+		mvwprintw(stepBoard, 1, 8, "%d", pushBox->getStep());
 		wrefresh(stepBoard);
 		return;
 	}
 	void renderPushBoard(WINDOW *pushBoard)
 	{
-		mvwprintw(pushBoard, 1, 8, "%d", PushBox->getPush());
+		mvwprintw(pushBoard, 1, 8, "%d", pushBox->getPush());
 		wrefresh(pushBoard);
 		return;
 	}
 	void renderTimeBoard(WINDOW *resetBoard)
 	{
-		mvwprintw(resetBoard, 1, 8, "%d", PushBox->getReset());
+		mvwprintw(resetBoard, 1, 8, "%d", pushBox->getReset());
 		wrefresh(resetBoard);
 		return;
 	}
 	void renderGameBoard(WINDOW *gameBoard)
 	{
-		int rowHandle = (15 - PushBox->getRow()) / 2;
-		int colHandle = (38 - PushBox->getCol() * 2) / 2 + 1;
-		int ux = PushBox->getX_userPos();
-		int uy = PushBox->getY_userPos();
-		char temp = PushBox->getMap(uy, ux);
-		PushBox->setMap(Coordinates(uy, ux), PLAYER);
+		int rowHandle = (15 - pushBox->getRow()) / 2;
+		int colHandle = (38 - pushBox->getCol() * 2) / 2 + 1;
+		int ux = pushBox->getX_userPos();
+		int uy = pushBox->getY_userPos();
+		char temp = pushBox->getMap(uy, ux);
+		pushBox->setMap(Coordinates(uy, ux), PLAYER);
 		for (int i = 0; i < 10; i++)
 		{
 			for (int j = 0; j < 20; j++)
 			{
-				switch (PushBox->getMap(i, j / 2))
+				switch (pushBox->getMap(i, j / 2))
 				{
 				case EMPTY:
 					wattron(gameBoard, COLOR_PAIR(2));
@@ -107,7 +107,7 @@ public:
 			}
 		}
 		wrefresh(gameBoard);
-		PushBox->setMap(Coordinates(uy, ux), temp);
+		pushBox->setMap(Coordinates(uy, ux), temp);
 		return;
 	};
 	void renderAll(WINDOW *levelBoard, WINDOW *stepBoard, WINDOW *pushBoard, WINDOW *resetBoard, WINDOW *gameBoard)
@@ -131,11 +131,11 @@ public:
 		mvprintw(2, 27, "S C O R E");
 		attroff(COLOR_PAIR(8));
 		int score = 1000000, step, push, reset;
-		for (int i = 0; i < PushBox->getRecords().size(); i++)
+		for (int i = 0; i < pushBox->getRecords().size(); i++)
 		{
-			step = PushBox->getRecords()[i][0];
-			push = PushBox->getRecords()[i][1];
-			reset = PushBox->getRecords()[i][2];
+			step = pushBox->getRecords()[i][0];
+			push = pushBox->getRecords()[i][1];
+			reset = pushBox->getRecords()[i][2];
 			score -= step * 649 + push * 2646 + reset * 47332;
 			mvprintw(5 + i * 2, 9, "Level %d", i + 1);
 			mvprintw(5 + i * 2, 24, "Step %d", step);
@@ -154,7 +154,7 @@ public:
 	}
 
 private:
-	PushBox *PushBox;
+	PushBox *pushBox;
 };
 
 #endif
