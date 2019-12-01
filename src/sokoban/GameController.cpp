@@ -58,41 +58,29 @@ void GameController::gameDelete()
 
 bool GameController::IsinMapNow()
 {
-	if (pushBox->getX_userPos() < pushBox->getRow() && pushBox->getX_userPos() > 0 &&
-		pushBox->getY_userPos() < pushBox->getCol() && pushBox->getY_userPos() > 0)
-	{
-		return true;
-	}
-	return false;
+	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
+		   0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
+
 bool GameController::IsinMapNow(int dy, int dx)
 {
-	if ((dx < pushBox->getCol() && dx > 0 && dy < pushBox->getCol() && dy > 0))
-	{
-		return true;
-	}
-	return false;
+	return 0 < dx && dx < pushBox->getRow() && 0 < dy && dy < pushBox->getCol();
 }
 
 bool GameController::CheckPosition(Coordinates userposition)
 {
 	if (!IsinMapNow())
-	{
 		return false;
-	}
 
 	int dx = pushBox->getX_userPos() + userposition.x;
 	int dy = pushBox->getY_userPos() + userposition.y;
 
 	if (!IsinMapNow(dy, dx))
-	{
 		return false;
-	};
 
 	if (pushBox->getMap(dy, dx) == 1)
-	{
 		return false;
-	}
+
 	return true;
 }
 
@@ -104,11 +92,10 @@ void GameController::setGoalPos(vector<Coordinates> goalList)
 		int goalY = goalList[i].y;
 
 		if (pushBox->getMap(goalY, goalX) == EMPTY)
-		{
 			pushBox->setMap(Coordinates(goalY, goalX), GOAL);
-		}
 	}
 }
+
 void GameController::move(Coordinates userposition)
 {
 	pushBox->addStep();
@@ -120,20 +107,16 @@ void GameController::move(Coordinates userposition)
 	int nextY = curY + userposition.y;
 
 	if (pushBox->getMap(nextY, nextX) == WALL)
-	{
 		return;
-	}
 
-	//BOX를 밀때
+	// When pushes the Box
 	if (pushBox->getMap(nextY, nextX) == BOX)
 	{
 		int nextPosBox_X = nextX + userposition.x;
 		int nextPosBox_Y = nextY + userposition.y;
 
 		if (pushBox->getMap(nextPosBox_Y, nextPosBox_X) == BOX || pushBox->getMap(nextPosBox_Y, nextPosBox_X) == WALL)
-		{
 			return;
-		}
 
 		pushBox->setMap(Coordinates(curY, curX), EMPTY);
 		pushBox->setMap(Coordinates(nextY, nextX), PLAYER);
@@ -142,6 +125,7 @@ void GameController::move(Coordinates userposition)
 		pushBox->addPush();
 		return;
 	}
+
 	pushBox->setMap(Coordinates(curY, curX), EMPTY);
 	pushBox->setMap(Coordinates(nextY, nextX), PLAYER);
 	pushBox->setUserPos(Coordinates(nextX, nextY));
@@ -159,10 +143,10 @@ bool GameController::postProcessing()
 		rec.push_back(pushBox->getPush());
 		rec.push_back(pushBox->getReset());
 		pushBox->addRecords(rec);
+
 		if (pushBox->getLevel() == FINALLEVEL)
-		{
 			return showResult();
-		}
+
 		else
 		{
 			pushBox->setLevel(pushBox->getLevel() + 1);
@@ -174,6 +158,7 @@ bool GameController::postProcessing()
 			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 		}
 	}
+
 	return false;
 }
 
@@ -183,17 +168,17 @@ bool GameController::isSuccess()
 	{
 		int x = pushBox->getGoalList()[i].x;
 		int y = pushBox->getGoalList()[i].y;
+
 		if (pushBox->getMap(y, x) == 2)
-		{
 			continue;
-		}
+
 		else
-		{
 			return false;
-		}
 	}
+
 	return true;
 }
+
 void GameController::goNextLevel()
 {
 	for (int i = 0; i < pushBox->getGoalList().size(); i++)
@@ -202,6 +187,7 @@ void GameController::goNextLevel()
 		int y = pushBox->getGoalList()[i].y;
 		pushBox->setMap(Coordinates(y, x), 2);
 	}
+
 	return;
 }
 
@@ -256,6 +242,7 @@ void GameController::startGame()
 	wrefresh(resetBoard);
 	wrefresh(gameBoard);
 }
+
 bool GameController::showResult()
 {
 	clear();
@@ -264,9 +251,8 @@ bool GameController::showResult()
 	{
 		char t = getch();
 		if (t == 'q' || t == 'Q')
-		{
 			return true;
-		}
+
 		else if (t == 'n' || t == 'N')
 		{
 			pushBox->setLevel(1);
@@ -278,9 +264,8 @@ bool GameController::showResult()
 			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 			return false;
 		}
+
 		else
-		{
 			continue;
-		}
 	}
 }

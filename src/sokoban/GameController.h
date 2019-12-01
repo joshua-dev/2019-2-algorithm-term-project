@@ -6,12 +6,15 @@
 class GameController
 {
 public:
+	/**
+	 * Constructor
+	 */
 	GameController(){};
-	GameController(PushBox *model, GameViewer *view)
+
+	GameController(PushBox *model, GameViewer *view) : pushBox(model), gameViewer(view)
 	{
-		pushBox = model;
-		gameViewer = view;
 	}
+
 	void setGoalPos(vector<Coordinates> goalposition);
 	void gameInitialize();
 	void gameDelete();
