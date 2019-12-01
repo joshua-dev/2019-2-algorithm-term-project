@@ -273,5 +273,9 @@ bool GameController::showResult()
 
 void GameController::autoResolve()
 {
+	queue<Coordinates> movePosition;
+	int a;
 	return;
 }
+
+
