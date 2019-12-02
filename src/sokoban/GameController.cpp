@@ -1,5 +1,6 @@
 #include "GameController.h"
-
+#include <queue>
+#include <Windows.h>
 void GameController::gameInitialize()
 {
 	setlocale(LC_ALL, "");
@@ -59,7 +60,7 @@ void GameController::gameDelete()
 bool GameController::IsinMapNow()
 {
 	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
-		   0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
+		0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
 
 bool GameController::IsinMapNow(int dy, int dx)
@@ -273,5 +274,157 @@ bool GameController::showResult()
 
 void GameController::autoResolve()
 {
-	return;
+	static queue<char> routes;
+
+	// Get Goals' position
+	vector<Coordinates> goals = pushBox->getGoalList();
+
+	int goalPosX = goals[0].x;
+	int goalPosY = goals[0].y;
+
+	// Get Boxs' position
+	int boxPosX, boxPosY;
+
+	for (int i = 0; i < 10; i++)
+		for (int j = 0; j < 10; j++)
+			if (pushBox->getMap(i, j) == BOX)
+				boxPosX = j, boxPosY = i;
+
+	int moveBoxX = goalPosX - boxPosX, moveBoxY = goalPosY - boxPosY;
+
+	for (int i = 0; i < abs(moveBoxX); i++)
+	{
+		if (moveBoxX > 0)
+			routes.push('r');
+		else
+			routes.push('l');
+	}
+
+	for (int i = 0; i < abs(moveBoxY); i++)
+	{
+		if (moveBoxY > 0)
+			routes.push('d');
+		else
+			routes.push('u');
+	}
+	char buf[128];
+	sprintf_s(buf, "받는 값... x=%d y=%d gx=%d gy=%d", boxPosX, boxPosY, goalPosX, goalPosY);
+	OutputDebugString(buf);
+	while (!routes.empty())
+	{
+		char direction = routes.front();
+		routes.pop();
+		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
+		char buf[128];
+		sprintf_s(buf, "받는 값... px=%d py=%d bx=%d by=%d gx=%d gy=%d key=%c \n", playerPosX, playerPosY, boxPosX, boxPosY, goalPosX, goalPosY, direction);
+		OutputDebugString(buf);
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				if (pushBox->getMap(i, j) == BOX)
+					boxPosX = j, boxPosY = i;
+		switch (direction)
+		{
+			// Get Player's position
+
+		case 'u':
+			// set Player to Box's down position, move Up
+			if (playerPosX != boxPosX || playerPosY != boxPosY + 1)
+			{
+				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY + 1 - playerPosY;
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+
+					else
+						move(Coordinates(-1, 0));
+				}
+
+			}
+			move(Coordinates(0, -1));
+			break;
+
+		case 'd':
+			// set Player to Box's up position, move Down
+			if (playerPosX != boxPosX || playerPosY != boxPosY - 1)
+			{
+				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY - 1 - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(0, 1));
+			break;
+
+		case 'r':
+			// set Player to Box's left position, move Right
+			if (playerPosX != boxPosX - 1 || playerPosY != boxPosY)
+			{
+				int movePlayerX = boxPosX - 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(1, 0));
+			break;
+
+		case 'l':
+			// set Player to Box's right position, move Left
+			if (playerPosX != boxPosX + 1 || playerPosY != boxPosY)
+			{
+				int movePlayerX = boxPosX + 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
+				for (int i = 0; i < abs(movePlayerY); i++)
+
+					for (int i = 0; i < abs(movePlayerX); i++)
+					{
+						if (movePlayerX > 0)
+							move(Coordinates(1, 0));
+						else
+							move(Coordinates(-1, 0));
+					}
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(-1, 0));
+			break;
+
+		default:
+			break;
+		} // end swtich
+	} // end while
 }
