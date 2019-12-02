@@ -20,8 +20,8 @@ public:
 	void setGoalPos(vector<Coordinates> goalposition);
 	void gameInitialize();
 	void gameDelete();
-	bool IsinMapNow();
-	bool IsinMapNow(int dy, int dx);
+	bool isInMapNow();
+	bool isInMapNow(int dy, int dx);
 	bool CheckPosition(Coordinates userPos);
 	void move(Coordinates userPos);
 	bool postProcessing();
