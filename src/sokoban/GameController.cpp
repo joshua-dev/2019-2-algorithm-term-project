@@ -1,4 +1,5 @@
 #include "GameController.h"
+#include <queue>
 
 void GameController::gameInitialize()
 {
@@ -56,26 +57,26 @@ void GameController::gameDelete()
 	return;
 }
 
-bool GameController::IsinMapNow()
+bool GameController::isInMapNow()
 {
 	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
 		   0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
 
-bool GameController::IsinMapNow(int dy, int dx)
+bool GameController::isInMapNow(int dy, int dx)
 {
 	return 0 < dx && dx < pushBox->getRow() && 0 < dy && dy < pushBox->getCol();
 }
 
 bool GameController::CheckPosition(Coordinates userposition)
 {
-	if (!IsinMapNow())
+	if (!isInMapNow())
 		return false;
 
 	int dx = pushBox->getX_userPos() + userposition.x;
 	int dy = pushBox->getY_userPos() + userposition.y;
 
-	if (!IsinMapNow(dy, dx))
+	if (!isInMapNow(dy, dx))
 		return false;
 
 	if (pushBox->getMap(dy, dx) == 1)
@@ -169,7 +170,7 @@ bool GameController::isSuccess()
 		int x = pushBox->getGoalList()[i].x;
 		int y = pushBox->getGoalList()[i].y;
 
-		if (pushBox->getMap(y, x) == 2)
+		if (pushBox->getMap(y, x) == BOX)
 			continue;
 
 		else
@@ -185,7 +186,7 @@ void GameController::goNextLevel()
 	{
 		int x = pushBox->getGoalList()[i].x;
 		int y = pushBox->getGoalList()[i].y;
-		pushBox->setMap(Coordinates(y, x), 2);
+		pushBox->setMap(Coordinates(y, x), BOX);
 	}
 
 	return;
@@ -273,5 +274,149 @@ bool GameController::showResult()
 
 void GameController::autoResolve()
 {
-	return;
+	static queue<char> routes;
+
+	// Get Goals' position
+	vector<Coordinates> goals = pushBox->getGoalList();
+
+	int goalPosX = goals[0].x;
+	int goalPosY = goals[0].y;
+
+	// Get Boxs' position
+	int boxPosX, boxPosY;
+
+	for (int i = 0; i < 10; i++)
+		for (int j = 0; j < 10; j++)
+			if (pushBox->getMap(i, j) == BOX)
+				boxPosX = i, boxPosY = j;
+
+	int moveBoxX = goalPosX - boxPosX, moveBoxY = goalPosY - boxPosY;
+
+	for (int i = 0; i < abs(moveBoxX); i++)
+	{
+		if (moveBoxX > 0)
+			routes.push('r');
+		else
+			routes.push('l');
+	}
+
+	for (int i = 0; i < abs(moveBoxY); i++)
+	{
+		if (moveBoxY > 0)
+			routes.push('d');
+		else
+			routes.push('u');
+	}
+
+	while (!routes.empty())
+	{
+		// Get Player's position
+		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
+
+		char direction = routes.back();
+		routes.pop();
+
+		switch (direction)
+		{
+		case 'u':
+			// set Player to Box's down position, move Up
+			if (playerPosX != boxPosX || playerPosY != boxPosY + 1)
+			{
+				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY + 1 - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(0, -1));
+			break;
+
+		case 'd':
+			// set Player to Box's up position, move Down
+			if (playerPosX != boxPosX || playerPosY != boxPosY - 1)
+			{
+				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY - 1 - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(0, 1));
+			break;
+
+		case 'r':
+			// set Player to Box's left position, move Right
+			if (playerPosX != boxPosX - 1 || playerPosY != boxPosY)
+			{
+				int movePlayerX = boxPosX - 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(1, 0));
+			break;
+
+		case 'l':
+			// set Player to Box's right position, move Left
+			if (playerPosX != boxPosX + 1 || playerPosY != boxPosY)
+			{
+				int movePlayerX = boxPosX + 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
+
+				for (int i = 0; i < abs(movePlayerY); i++)
+				{
+					if (movePlayerY > 0)
+						move(Coordinates(0, 1));
+					else
+						move(Coordinates(0, -1));
+				}
+			}
+			move(Coordinates(-1, 0));
+			break;
+
+		default:
+			break;
+		} // end swtich
+
+	} // end while
 }
