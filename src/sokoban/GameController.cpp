@@ -1,8 +1,7 @@
 #include "GameController.h"
-#include<unistd.h>
 #include <queue>
 
-// #include <Windows.h>
+#include <Windows.h>
 
 
 void GameController::gameInitialize()
@@ -103,16 +102,18 @@ void GameController::setGoalPos(vector<Coordinates> goalList)
 
 void GameController::move(Coordinates userposition)
 {
-	pushBox->addStep();
-
+	
 	int curX = pushBox->getX_userPos();
 	int curY = pushBox->getY_userPos();
 
 	int nextX = curX + userposition.x;
 	int nextY = curY + userposition.y;
 
-	if (pushBox->getMap(nextY, nextX) == WALL)
+	if (pushBox->getMap(nextY, nextX) == WALL) {
 		return;
+	}else {
+		pushBox->addStep();
+	}
 
 	// When pushes the Box
 	if (pushBox->getMap(nextY, nextX) == BOX)
@@ -483,7 +484,7 @@ void GameController::autoResolve()
 						}
 					}
 				}
-<<<<<<< HEAD
+
 				move(Coordinates(-1, 0));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 				Sleep(700);
