@@ -282,6 +282,7 @@ void GameController::autoResolve()
 
 	// Get Goals' position
 	vector<Coordinates> goals = pushBox->getGoalList();
+
 	int goalsize =0;
 	while (goalsize != goals.size() )
 	{
@@ -482,6 +483,7 @@ void GameController::autoResolve()
 						}
 					}
 				}
+<<<<<<< HEAD
 				move(Coordinates(-1, 0));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 				Sleep(700);
@@ -492,4 +494,7 @@ void GameController::autoResolve()
 			} // end swtich
 		}	 // end while
 	}//first while
+
 }
+
+
