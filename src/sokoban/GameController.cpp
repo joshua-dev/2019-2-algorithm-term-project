@@ -287,8 +287,8 @@ void GameController::autoResolve()
 	// Get Boxs' position
 	int boxPosX, boxPosY;
 
-	for (int i = 0; i < 10; i++)
-		for (int j = 0; j < 10; j++)
+	for (int i = 0; i < pushBox->getRow(); i++)
+		for (int j = 0; j < pushBox->getCol(); j++)
 			if (pushBox->getMap(i, j) == BOX)
 				boxPosX = j, boxPosY = i;
 
@@ -430,6 +430,8 @@ void GameController::autoResolve()
 
 		default:
 			break;
+
 		} // end swtich
-	}	 // end while
+
+	} // end while
 }
