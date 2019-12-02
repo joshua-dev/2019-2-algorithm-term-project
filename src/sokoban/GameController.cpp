@@ -287,8 +287,8 @@ void GameController::autoResolve()
 	// Get Boxs' position
 	int boxPosX, boxPosY;
 
-	for (int i = 0; i < pushBox->getRow(); i++)
-		for (int j = 0; j < pushBox->getCol(); j++)
+	for (int i = 0; i < pushBox->getCol(); i++)
+		for (int j = 0; j < pushBox->getRow(); j++)
 			if (pushBox->getMap(i, j) == BOX)
 				boxPosX = j, boxPosY = i;
 
@@ -321,8 +321,8 @@ void GameController::autoResolve()
 		char buf[128];
 		// sprintf_s(buf, "�޴� ��... px=%d py=%d bx=%d by=%d gx=%d gy=%d key=%c \n", playerPosX, playerPosY, boxPosX, boxPosY, goalPosX, goalPosY, direction);
 		// OutputDebugString(buf);
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
+		for (int i = 0; i < pushBox->getCol(); i++)
+			for (int j = 0; j < pushBox->getRow(); j++)
 				if (pushBox->getMap(i, j) == BOX)
 					boxPosX = j, boxPosY = i;
 		switch (direction)
