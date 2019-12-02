@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "curses.h"
+#include "ncurses.h"
 
 using namespace std;
 
@@ -45,7 +45,6 @@ public:
 					goalList.push_back(Coordinates(j, i));
 			}
 		}
-
 	};
 
 	int getLevel()
