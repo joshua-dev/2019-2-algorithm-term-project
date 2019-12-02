@@ -33,17 +33,10 @@ public:
 	void startGame();
 	bool showResult();
 
-	queue<string> box_1(queue<Coordinates> movePosition, Coordinates boxPos, Coordinates goalPos);
-	queue<Coordinates> userOnRight();
-	queue<Coordinates> userOnLeft();
-	queue<Coordinates> userOnUp();
-	queue<Coordinates> userOnDown();
-
 private:
 	const int FINALLEVEL = 5;
 	PushBox *pushBox;
 	GameViewer *gameViewer;
-	Solvers
 };
 
 #endif

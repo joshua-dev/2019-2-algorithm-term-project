@@ -190,6 +190,11 @@ public:
 	{
 		return map[a][b];
 	}
+
+	char** getMap()
+	{
+		return map;
+	}
 };
 
 #endif

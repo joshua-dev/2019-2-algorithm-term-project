@@ -1,4 +1,5 @@
 #include "GameController.h"
+#include<unistd.h>
 
 void GameController::gameInitialize()
 {
@@ -273,8 +274,30 @@ bool GameController::showResult()
 
 void GameController::autoResolve()
 {
-	queue<Coordinates> movePosition;
-	int a;
+	Solver solver;
+	solver.run(pushBox -> getMap(), make_pair(pushBox -> getX_userPos(), pushBox -> getY_userPos()));
+	string sol = solver.getSol();
+	for(int i = 0; i < sol.size(); i++)
+	{
+		switch(sol.at(i))
+		{
+			case 'U':
+				move(Coordinates(0,-1));
+				break;
+			case 'D':
+				move(Coordinates(0,1));
+				break;
+			case 'R':
+				move(Coordinates(1,0));
+				break;
+			case 'L':
+				move(Coordinates(-1,0));
+				break;
+			case ' ':
+				break;
+		}
+		sleep(100);
+	}
 	return;
 }
 

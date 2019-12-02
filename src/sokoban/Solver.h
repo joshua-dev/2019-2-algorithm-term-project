@@ -12,18 +12,17 @@
 class Solver
 {
 private:
-    vector<vector<int>> map1;
-    vector<vector<int>> map2;
-    std::map <pair<vector<vector<int>>, Coordinates>, bool> visited;
+    char** map;
+    std::map <pair<char**, pair<int , int>>, bool> visited;
     string finalSol;
-    Coordinates userPos;
+    pair<int, int> userPos;
 
 public:
-    Solver(int, string&);
-    void run(PushBox *pushBox);
+    Solver();
+    void run(char** map, pair<int, int> userPos);
     string getSol();
-    bool gameWin(vector<vector<int>> map);
-    bool getSolution(vector<vector<int>> map, Coordinates userPos, string sol);
+    bool gameWin(char** map1);
+    bool getSolution(char** map, pair<int, int> userPos, string sol);
 };
 
 #endif
