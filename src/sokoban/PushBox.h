@@ -23,6 +23,7 @@ private:
 	Coordinates userPosition;
 	vector<Coordinates> goalList;
 	vector<vector<int>> records;
+	Coordinates boxPosition;
 
 public:
 	PushBox()
@@ -44,6 +45,12 @@ public:
 				{
 					goalList.push_back(Coordinates(j, i));
 				}
+
+				if(temp == 2)
+				{
+					boxPosition.y = i;
+					boxPosition.x = j;
+				}
 			}
 		}
 	};
@@ -59,6 +66,11 @@ public:
 	Coordinates getUserPos()
 	{
 		return userPosition;
+	}
+
+	Coordinates getBoxPos()
+	{
+		return boxPosition;
 	}
 	void setUserPos(const Coordinates &input)
 	{
@@ -177,6 +189,11 @@ public:
 	char getMap(int a, int b)
 	{
 		return map[a][b];
+	}
+
+	char** getMap()
+	{
+		return map;
 	}
 };
 
