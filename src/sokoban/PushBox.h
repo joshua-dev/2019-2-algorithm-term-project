@@ -14,8 +14,8 @@ class PushBox
 {
 private:
 	char **map;
-	int rowMax = 10;
-	int colMax = 10;
+	int rowMax = 8;
+	int colMax = 8;
 	int level = 1;
 	int step = 0;
 	int push = 0;
