@@ -310,14 +310,14 @@ void GameController::autoResolve()
 
 	while (!routes.empty())
 	{
+		// Get Player's position
+		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
+
 		char direction = routes.back();
 		routes.pop();
 
 		switch (direction)
 		{
-			// Get Player's position
-			int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
-
 		case 'u':
 			// set Player to Box's down position, move Up
 			if (playerPosX != boxPosX || playerPosY != boxPosY + 1)
