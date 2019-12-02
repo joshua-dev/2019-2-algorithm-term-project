@@ -1,6 +1,8 @@
 #include "GameController.h"
 #include <queue>
 
+#include <Windows.h>
+
 void GameController::gameInitialize()
 {
 	setlocale(LC_ALL, "");
@@ -60,7 +62,7 @@ void GameController::gameDelete()
 bool GameController::isInMapNow()
 {
 	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
-		   0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
+		0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
 
 bool GameController::isInMapNow(int dy, int dx)
@@ -287,8 +289,8 @@ void GameController::autoResolve()
 
 	for (int i = 0; i < 10; i++)
 		for (int j = 0; j < 10; j++)
-			if (pushBox->getMap(i, j) == BOX)
-				boxPosX = i, boxPosY = j;
+			if (pushBox->getMap(i, j) == BOX
+				boxPosX = j, boxPosY = i;
 
 	int moveBoxX = goalPosX - boxPosX, moveBoxY = goalPosY - boxPosY;
 
@@ -307,29 +309,31 @@ void GameController::autoResolve()
 		else
 			routes.push('u');
 	}
-
+          
+	char buf[128];
+	sprintf_s(buf, "�޴� ��... x=%d y=%d gx=%d gy=%d", boxPosX, boxPosY, goalPosX, goalPosY);
+	OutputDebugString(buf);
 	while (!routes.empty())
 	{
-		// Get Player's position
-		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
-
-		char direction = routes.back();
+		char direction = routes.front();
 		routes.pop();
-
+		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
+		char buf[128];
+		sprintf_s(buf, "�޴� ��... px=%d py=%d bx=%d by=%d gx=%d gy=%d key=%c \n", playerPosX, playerPosY, boxPosX, boxPosY, goalPosX, goalPosY, direction);
+		OutputDebugString(buf);
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				if (pushBox->getMap(i, j) == BOX)
+					boxPosX = j, boxPosY = i;
 		switch (direction)
 		{
+			// Get Player's position
+
 		case 'u':
 			// set Player to Box's down position, move Up
 			if (playerPosX != boxPosX || playerPosY != boxPosY + 1)
 			{
 				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY + 1 - playerPosY;
-				for (int i = 0; i < abs(movePlayerX); i++)
-				{
-					if (movePlayerX > 0)
-						move(Coordinates(1, 0));
-					else
-						move(Coordinates(-1, 0));
-				}
 
 				for (int i = 0; i < abs(movePlayerY); i++)
 				{
@@ -338,6 +342,16 @@ void GameController::autoResolve()
 					else
 						move(Coordinates(0, -1));
 				}
+        
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+
+					else
+						move(Coordinates(-1, 0));
+				}
+
 			}
 			move(Coordinates(0, -1));
 			break;
@@ -395,6 +409,7 @@ void GameController::autoResolve()
 			if (playerPosX != boxPosX + 1 || playerPosY != boxPosY)
 			{
 				int movePlayerX = boxPosX + 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
+        
 				for (int i = 0; i < abs(movePlayerX); i++)
 				{
 					if (movePlayerX > 0)
@@ -417,6 +432,5 @@ void GameController::autoResolve()
 		default:
 			break;
 		} // end swtich
-
 	} // end while
 }
