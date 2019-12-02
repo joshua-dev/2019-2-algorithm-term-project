@@ -1,6 +1,8 @@
 #include "GameController.h"
 #include <queue>
+
 #include <Windows.h>
+
 void GameController::gameInitialize()
 {
 	setlocale(LC_ALL, "");
@@ -57,26 +59,26 @@ void GameController::gameDelete()
 	return;
 }
 
-bool GameController::IsinMapNow()
+bool GameController::isInMapNow()
 {
 	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
 		0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
 
-bool GameController::IsinMapNow(int dy, int dx)
+bool GameController::isInMapNow(int dy, int dx)
 {
 	return 0 < dx && dx < pushBox->getRow() && 0 < dy && dy < pushBox->getCol();
 }
 
 bool GameController::CheckPosition(Coordinates userposition)
 {
-	if (!IsinMapNow())
+	if (!isInMapNow())
 		return false;
 
 	int dx = pushBox->getX_userPos() + userposition.x;
 	int dy = pushBox->getY_userPos() + userposition.y;
 
-	if (!IsinMapNow(dy, dx))
+	if (!isInMapNow(dy, dx))
 		return false;
 
 	if (pushBox->getMap(dy, dx) == 1)
@@ -170,7 +172,7 @@ bool GameController::isSuccess()
 		int x = pushBox->getGoalList()[i].x;
 		int y = pushBox->getGoalList()[i].y;
 
-		if (pushBox->getMap(y, x) == 2)
+		if (pushBox->getMap(y, x) == BOX)
 			continue;
 
 		else
@@ -186,7 +188,7 @@ void GameController::goNextLevel()
 	{
 		int x = pushBox->getGoalList()[i].x;
 		int y = pushBox->getGoalList()[i].y;
-		pushBox->setMap(Coordinates(y, x), 2);
+		pushBox->setMap(Coordinates(y, x), BOX);
 	}
 
 	return;
@@ -287,7 +289,7 @@ void GameController::autoResolve()
 
 	for (int i = 0; i < 10; i++)
 		for (int j = 0; j < 10; j++)
-			if (pushBox->getMap(i, j) == BOX)
+			if (pushBox->getMap(i, j) == BOX
 				boxPosX = j, boxPosY = i;
 
 	int moveBoxX = goalPosX - boxPosX, moveBoxY = goalPosY - boxPosY;
@@ -307,8 +309,9 @@ void GameController::autoResolve()
 		else
 			routes.push('u');
 	}
+          
 	char buf[128];
-	sprintf_s(buf, "¹Þ´Â °ª... x=%d y=%d gx=%d gy=%d", boxPosX, boxPosY, goalPosX, goalPosY);
+	sprintf_s(buf, "ï¿½Þ´ï¿½ ï¿½ï¿½... x=%d y=%d gx=%d gy=%d", boxPosX, boxPosY, goalPosX, goalPosY);
 	OutputDebugString(buf);
 	while (!routes.empty())
 	{
@@ -316,7 +319,7 @@ void GameController::autoResolve()
 		routes.pop();
 		int playerPosX = pushBox->getX_userPos(), playerPosY = pushBox->getY_userPos();
 		char buf[128];
-		sprintf_s(buf, "¹Þ´Â °ª... px=%d py=%d bx=%d by=%d gx=%d gy=%d key=%c \n", playerPosX, playerPosY, boxPosX, boxPosY, goalPosX, goalPosY, direction);
+		sprintf_s(buf, "ï¿½Þ´ï¿½ ï¿½ï¿½... px=%d py=%d bx=%d by=%d gx=%d gy=%d key=%c \n", playerPosX, playerPosY, boxPosX, boxPosY, goalPosX, goalPosY, direction);
 		OutputDebugString(buf);
 		for (int i = 0; i < 10; i++)
 			for (int j = 0; j < 10; j++)
@@ -331,6 +334,7 @@ void GameController::autoResolve()
 			if (playerPosX != boxPosX || playerPosY != boxPosY + 1)
 			{
 				int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY + 1 - playerPosY;
+
 				for (int i = 0; i < abs(movePlayerY); i++)
 				{
 					if (movePlayerY > 0)
@@ -338,6 +342,7 @@ void GameController::autoResolve()
 					else
 						move(Coordinates(0, -1));
 				}
+        
 				for (int i = 0; i < abs(movePlayerX); i++)
 				{
 					if (movePlayerX > 0)
@@ -404,15 +409,16 @@ void GameController::autoResolve()
 			if (playerPosX != boxPosX + 1 || playerPosY != boxPosY)
 			{
 				int movePlayerX = boxPosX + 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
-				for (int i = 0; i < abs(movePlayerY); i++)
+        
+				for (int i = 0; i < abs(movePlayerX); i++)
+				{
+					if (movePlayerX > 0)
+						move(Coordinates(1, 0));
+					else
+						move(Coordinates(-1, 0));
+				}
 
-					for (int i = 0; i < abs(movePlayerX); i++)
-					{
-						if (movePlayerX > 0)
-							move(Coordinates(1, 0));
-						else
-							move(Coordinates(-1, 0));
-					}
+				for (int i = 0; i < abs(movePlayerY); i++)
 				{
 					if (movePlayerY > 0)
 						move(Coordinates(0, 1));
