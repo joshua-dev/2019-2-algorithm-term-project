@@ -3,7 +3,7 @@
 
 #include "GameViewer.h"
 #include "Solver.h"
-#include<queue>
+#include <queue>
 
 class GameController
 {

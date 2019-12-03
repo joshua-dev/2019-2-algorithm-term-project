@@ -1,8 +1,6 @@
 #include "GameController.h"
 #include <queue>
-
-#include <Windows.h>
-
+#include <unistd.h>
 
 void GameController::gameInitialize()
 {
@@ -39,9 +37,8 @@ void GameController::gameInitialize()
 	{
 		char temp = getch();
 		if (temp != 's' && temp != 'S')
-		{
 			continue;
-		}
+
 		else
 			break;
 	}
@@ -102,16 +99,19 @@ void GameController::setGoalPos(vector<Coordinates> goalList)
 
 void GameController::move(Coordinates userposition)
 {
-	
+
 	int curX = pushBox->getX_userPos();
 	int curY = pushBox->getY_userPos();
 
 	int nextX = curX + userposition.x;
 	int nextY = curY + userposition.y;
 
-	if (pushBox->getMap(nextY, nextX) == WALL) {
+	if (pushBox->getMap(nextY, nextX) == WALL)
+	{
 		return;
-	}else {
+	}
+	else
+	{
 		pushBox->addStep();
 	}
 
@@ -284,8 +284,8 @@ void GameController::autoResolve()
 	// Get Goals' position
 	vector<Coordinates> goals = pushBox->getGoalList();
 
-	int goalsize =0;
-	while (goalsize != goals.size() )
+	int goalsize = 0;
+	while (goalsize != goals.size())
 	{
 		int goalPosX = goals[goalsize].x;
 		int goalPosY = goals[goalsize].y;
@@ -343,35 +343,39 @@ void GameController::autoResolve()
 
 					for (int i = 0; i < abs(movePlayerY); i++)
 					{
-						if (movePlayerY > 0) {
+						if (movePlayerY > 0)
+						{
 							move(Coordinates(0, 1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(0, -1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 
 					for (int i = 0; i < abs(movePlayerX); i++)
 					{
-						if (movePlayerX > 0) {
+						if (movePlayerX > 0)
+						{
 							move(Coordinates(1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(-1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 				}
 				move(Coordinates(0, -1));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-				Sleep(700);
+				usleep(300 * 1000);
 				break;
 
 			case 'd':
@@ -381,35 +385,39 @@ void GameController::autoResolve()
 					int movePlayerX = boxPosX - playerPosX, movePlayerY = boxPosY - 1 - playerPosY;
 					for (int i = 0; i < abs(movePlayerX); i++)
 					{
-						if (movePlayerX > 0) {
+						if (movePlayerX > 0)
+						{
 							move(Coordinates(1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(-1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 
 					for (int i = 0; i < abs(movePlayerY); i++)
 					{
-						if (movePlayerY > 0) {
+						if (movePlayerY > 0)
+						{
 							move(Coordinates(0, 1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(0, -1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 				}
 				move(Coordinates(0, 1));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-				Sleep(700);
+				usleep(300 * 1000);
 				break;
 
 			case 'r':
@@ -419,35 +427,39 @@ void GameController::autoResolve()
 					int movePlayerX = boxPosX - 1 - playerPosX, movePlayerY = boxPosY - playerPosY;
 					for (int i = 0; i < abs(movePlayerX); i++)
 					{
-						if (movePlayerX > 0) {
+						if (movePlayerX > 0)
+						{
 							move(Coordinates(1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(-1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 
 					for (int i = 0; i < abs(movePlayerY); i++)
 					{
-						if (movePlayerY > 0) {
+						if (movePlayerY > 0)
+						{
 							move(Coordinates(0, 1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(0, -1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 				}
 				move(Coordinates(1, 0));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-				Sleep(700);
+				usleep(300 * 1000);
 				break;
 
 			case 'l':
@@ -458,44 +470,45 @@ void GameController::autoResolve()
 
 					for (int i = 0; i < abs(movePlayerX); i++)
 					{
-						if (movePlayerX > 0) {
+						if (movePlayerX > 0)
+						{
 							move(Coordinates(1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(-1, 0));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 
 					for (int i = 0; i < abs(movePlayerY); i++)
 					{
-						if (movePlayerY > 0) {
+						if (movePlayerY > 0)
+						{
 							move(Coordinates(0, 1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
-						else {
+						else
+						{
 							move(Coordinates(0, -1));
 							gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-							Sleep(700);
+							usleep(300 * 1000);
 						}
 					}
 				}
 
 				move(Coordinates(-1, 0));
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
-				Sleep(700);
+				usleep(300 * 1000);
 				break;
 
 			default:
 				break;
 			} // end swtich
 		}	 // end while
-	}//first while
-
+	}		  //first while
 }
-
-
