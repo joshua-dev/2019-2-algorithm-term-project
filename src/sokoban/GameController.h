@@ -2,6 +2,8 @@
 #define _GAMECONTROLLER_H_
 
 #include "GameViewer.h"
+#include "Solver.h"
+#include <queue>
 
 class GameController
 {
