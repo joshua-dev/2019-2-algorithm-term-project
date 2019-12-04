@@ -32,6 +32,9 @@ public:
 	void autoResolve();
 	void startGame();
 	bool showResult();
+	
+	void getSolution();
+	string getSol();
 
 private:
 	const int FINALLEVEL = 5;
