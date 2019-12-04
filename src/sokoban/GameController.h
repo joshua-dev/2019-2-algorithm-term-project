@@ -2,7 +2,6 @@
 #define _GAMECONTROLLER_H_
 
 #include "GameViewer.h"
-#include "Solver.h"
 #include<queue>
 
 class GameController
@@ -33,13 +32,17 @@ public:
 	void startGame();
 	bool showResult();
 	
-	void getSolution();
-	string getSol();
+	//auto resolve method
+	void run(vector<vector<char>> mapi, int x, int y);
+	bool getSolution(vector<vector<char>> mapi, int x, int y, vector<char> sol);
+	void doAuto();
+	bool gameWin(vector<vector<char>> map);
 
 private:
 	const int FINALLEVEL = 5;
 	PushBox *pushBox;
 	GameViewer *gameViewer;
+	vector<char> finalSol;
 };
 
 #endif
