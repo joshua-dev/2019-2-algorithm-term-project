@@ -477,13 +477,13 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 
 		visited[vi] = true;
 		//Right
-		if(userX < 8)
+		if(userX < 9)
 		{
 			if(map[userY][userX + 1] != WALL)
 			{
 				if(map[userY][userX+1] == BOX)
 				{
-					if(userX < 7)
+					if(userX < 8)
 					{
 						if(map[userY][userX+2] != WALL && map[userY][userX+2] != BOX)
 						{
@@ -492,6 +492,7 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 							{
 								sol.push_back('R');
 								q.push(make_pair(make_pair(map, sol), make_pair(userX+1, userY)));
+								sol.pop_back();
 							}
 							swap(map[userY][userX+1], map[userY][userX+2]);
 						}
@@ -502,18 +503,19 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 					{
 						sol.push_back('R');
 						q.push(make_pair(make_pair(map, sol), make_pair(userX+1, userY)));
+						sol.pop_back();
 					}
 				}
 			}
 		}
 		//Left
-		if(userX > 2)
+		if(userX > 0)
 		{
 			if(map[userY][userX - 1] != WALL)
 			{
 				if(map[userY][userX-1] == BOX)
 				{
-					if(userX > 3)
+					if(userX > 1)
 					{
 						if(map[userY][userX-2] != WALL && map[userY][userX-2] != BOX)
 						{
@@ -522,6 +524,7 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 							{
 								sol.push_back('L');
 								q.push(make_pair(make_pair(map, sol), make_pair(userX-1, userY)));
+								sol.pop_back();
 							}
 							swap(map[userY][userX-1], map[userY][userX-2]);
 						}
@@ -532,18 +535,19 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 					{
 						sol.push_back('L');
 						q.push(make_pair(make_pair(map, sol), make_pair(userX-1, userY)));
+						sol.pop_back();
 					}
 				}
 			}
 		}
 		//UP
-		if(userY > 2)
+		if(userY > 0)
 		{
 			if(map[userY-1][userX] != WALL)
 			{
 				if(map[userY-1][userX] == BOX)
 				{
-					if(userX > 3)
+					if(userX > 1)
 					{
 						if(map[userY-2][userX] != WALL && map[userY-2][userX] != BOX)
 						{
@@ -553,6 +557,7 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 							{
 								sol.push_back('U');
 								q.push(make_pair(make_pair(map, sol), make_pair(userX, userY-1)));
+								sol.pop_back();
 							}
 							swap(map[userY-1][userX], map[userY-2][userX]);
 						}
@@ -563,19 +568,20 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 					{
 						sol.push_back('U');
 						q.push(make_pair(make_pair(map, sol), make_pair(userX, userY-1)));
+						sol.pop_back();
 					}
 				}
 			}
 		}
 
 		//DOWN
-		if(userY < 8)
+		if(userY < 9)
 		{
 			if(map[userY+1][userX] != WALL)
 			{
 				if(map[userY+1][userX] == BOX)
 				{
-					if(userY < 7)
+					if(userY < 8)
 					{
 						if(map[userY+2][userX] != WALL && map[userY+2][userX] != BOX)
 						{
@@ -584,6 +590,7 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 							{
 								sol.push_back('D');
 								q.push(make_pair(make_pair(map, sol), make_pair(userX, userY+1)));
+								sol.pop_back();
 							}
 							swap(map[userY+1][userX], map[userY+2][userX]);
 						}
@@ -594,6 +601,7 @@ bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector
 					{
 						sol.push_back('D');
 						q.push(make_pair(make_pair(map, sol), make_pair(userX, userY+1)));
+						sol.pop_back();
 					}
 				}
 			}
@@ -617,14 +625,10 @@ void GameController::run(vector<vector<char>> mapi, int x, int y)
 		}
 	}
 
-	pair<int, int> userPos;
-	userPos.first = x;
-	userPos.second = y;
-
 	vector<char> sol;
-	bool isGet = getSolution(mapi, userPos.first, userPos.second, sol);
+	bool isGet = getSolution(mapi,x,y, sol);
 	printf("Solution is: ");
-	for(int i = 0; i < sol.size(); i++)
+	for(int i = 0; i < finalSol.size(); i++)
 	{
 		printf("%c", finalSol[i]);
 	}
@@ -634,6 +638,7 @@ void GameController::run(vector<vector<char>> mapi, int x, int y)
 void GameController::doAuto()
 {
 	vector<vector<char>> map;
+	printf("%d,%d", pushBox -> getX_userPos(), pushBox ->getY_userPos());
 	run(map, pushBox -> getX_userPos(), pushBox -> getY_userPos());
 	for(int i = 0; i < finalSol.size(); i++)
 	{
@@ -652,6 +657,11 @@ void GameController::doAuto()
 				move(Coordinates(0,1));
 				break;
 		}
+
+		postProcessing();
+		sleep(1);
+
+		sleep(1);
 	}
 }
 
@@ -663,7 +673,7 @@ bool GameController::gameWin(vector<vector<char>> map)
 		int goal_x = goal[i].x;
 		int goal_y = goal[i].y;
 
-		if(map[goal_x][goal_y] == BOX)
+		if(map[goal_y][goal_x] == BOX)
 			continue;
 		else
 			return false;
