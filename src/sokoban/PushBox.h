@@ -45,7 +45,7 @@ public:
 				if (temp == 3)
 					goalList.push_back(Coordinates(j, i));
 
-				if(temp == 2)
+				if (temp == 2)
 				{
 					boxPosition.y = i;
 					boxPosition.x = j;
@@ -213,11 +213,10 @@ public:
 		return map[a][b];
 	}
 
-	char** getMap()
+	char **getMap()
 	{
 		return map;
 	}
 };
-
 
 #endif

@@ -1,6 +1,6 @@
 #include "GameController.h"
 
-int main()
+int main(void)
 {
 	PushBox pushBox;
 	GameViewer gameViewer(&pushBox);
@@ -14,16 +14,16 @@ int main()
 	{
 		switch (getch())
 		{
-		case KEY_UP: // up
+		case KEY_UP: //up
 			gameController.move(Coordinates(0, -1));
 			break;
-		case KEY_DOWN: // down
+		case KEY_DOWN: //down
 			gameController.move(Coordinates(0, 1));
 			break;
-		case KEY_RIGHT: // right
+		case KEY_RIGHT: //right
 			gameController.move(Coordinates(1, 0));
 			break;
-		case KEY_LEFT: // left
+		case KEY_LEFT: //left
 			gameController.move(Coordinates(-1, 0));
 			break;
 		case KEY_HOME:
@@ -45,9 +45,11 @@ int main()
 		bool t = gameController.postProcessing();
 		if (t)
 			goto end;
-	}
+	} // end while
+
 end:
 	gameController.gameDelete();
 
 	return 0;
-}
+
+} // end main

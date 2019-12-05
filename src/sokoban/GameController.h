@@ -3,6 +3,8 @@
 
 #include "GameViewer.h"
 #include<queue>
+#include<map>
+
 
 class GameController
 {
