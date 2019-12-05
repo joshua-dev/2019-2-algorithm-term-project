@@ -1,6 +1,6 @@
 #include "GameController.h"
-#include <queue>
 #include <unistd.h>
+
 
 void GameController::gameInitialize()
 {
@@ -505,10 +505,241 @@ void GameController::autoResolve()
 				gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 				usleep(300 * 1000);
 				break;
+			}
+		}
+	}
+}
 
-			default:
+bool GameController::getSolution(vector<vector<char>> mapi, int x, int y, vector<char> soli)
+{
+	queue <pair <pair <vector <vector<char>>, vector<char>>, pair<int, int>>> q;
+	pair <pair <vector<vector<char>>, vector<char>>,pair<int, int>> initial;
+
+	initial.first.first = mapi;
+	initial.first.second = soli;
+	initial.second.first = x;
+	initial.second.second = y;
+	
+	q.push(initial);
+	map<pair<vector<vector<char>>, pair<int , int>>, bool> visited;
+	while(!q.empty())
+	{
+		pair<pair<vector<vector<char>>, vector<char>>, pair<int, int>> top = q.front();
+		vector<vector<char>> map = top.first.first;
+		vector<char> sol = top.first.second;
+		int userX = top.second.first;
+		int userY = top.second.second;
+
+		q.pop();
+		if(gameWin(map))
+		{
+			finalSol = sol;
+			return true;
+		}
+
+		pair<vector<vector<char>>, pair<int ,int>> vi;
+		vi.first = map;
+		vi.second.first = userX;
+		vi.second.second = userY;
+		if(visited[vi])
+		{
+			continue;
+		}
+
+		visited[vi] = true;
+		//Right
+		if(userX < 9)
+		{
+			if(map[userY][userX + 1] != WALL)
+			{
+				if(map[userY][userX+1] == BOX)
+				{
+					if(userX < 8)
+					{
+						if(map[userY][userX+2] != WALL && map[userY][userX+2] != BOX)
+						{
+							swap(map[userY][userX+1], map[userY][userX+2]);
+							if(!visited[make_pair(map, make_pair(userX+1, userY))])
+							{
+								sol.push_back('R');
+								q.push(make_pair(make_pair(map, sol), make_pair(userX+1, userY)));
+								sol.pop_back();
+							}
+							swap(map[userY][userX+1], map[userY][userX+2]);
+						}
+					}
+				} else
+				{
+					if(!visited[make_pair(map, make_pair(userX+1, userY))])
+					{
+						sol.push_back('R');
+						q.push(make_pair(make_pair(map, sol), make_pair(userX+1, userY)));
+						sol.pop_back();
+					}
+				}
+			}
+		}
+		//Left
+		if(userX > 0)
+		{
+			if(map[userY][userX - 1] != WALL)
+			{
+				if(map[userY][userX-1] == BOX)
+				{
+					if(userX > 1)
+					{
+						if(map[userY][userX-2] != WALL && map[userY][userX-2] != BOX)
+						{
+							swap(map[userY][userX-1], map[userY][userX-2]);
+							if(!visited[make_pair(map, make_pair(userX-1, userY))])
+							{
+								sol.push_back('L');
+								q.push(make_pair(make_pair(map, sol), make_pair(userX-1, userY)));
+								sol.pop_back();
+							}
+							swap(map[userY][userX-1], map[userY][userX-2]);
+						}
+					}
+				} else
+				{
+					if(!visited[make_pair(map, make_pair(userX-1, userY))])
+					{
+						sol.push_back('L');
+						q.push(make_pair(make_pair(map, sol), make_pair(userX-1, userY)));
+						sol.pop_back();
+					}
+				}
+			}
+		}
+		//UP
+		if(userY > 0)
+		{
+			if(map[userY-1][userX] != WALL)
+			{
+				if(map[userY-1][userX] == BOX)
+				{
+					if(userX > 1)
+					{
+						if(map[userY-2][userX] != WALL && map[userY-2][userX] != BOX)
+						{
+							
+							swap(map[userY-1][userX], map[userY-2][userX]);
+							if(!visited[make_pair(map, make_pair(userX, userY-1))])
+							{
+								sol.push_back('U');
+								q.push(make_pair(make_pair(map, sol), make_pair(userX, userY-1)));
+								sol.pop_back();
+							}
+							swap(map[userY-1][userX], map[userY-2][userX]);
+						}
+					}
+				} else
+				{
+					if(!visited[make_pair(map, make_pair(userX, userY-1))])
+					{
+						sol.push_back('U');
+						q.push(make_pair(make_pair(map, sol), make_pair(userX, userY-1)));
+						sol.pop_back();
+					}
+				}
+			}
+		}
+
+		//DOWN
+		if(userY < 9)
+		{
+			if(map[userY+1][userX] != WALL)
+			{
+				if(map[userY+1][userX] == BOX)
+				{
+					if(userY < 8)
+					{
+						if(map[userY+2][userX] != WALL && map[userY+2][userX] != BOX)
+						{
+							swap(map[userY+1][userX], map[userY+2][userX]);
+							if(!visited[make_pair(map, make_pair(userX, userY+1))])
+							{
+								sol.push_back('D');
+								q.push(make_pair(make_pair(map, sol), make_pair(userX, userY+1)));
+								sol.pop_back();
+							}
+							swap(map[userY+1][userX], map[userY+2][userX]);
+						}
+					}
+				} else
+				{
+					if(!visited[make_pair(map, make_pair(userX, userY+1))])
+					{
+						sol.push_back('D');
+						q.push(make_pair(make_pair(map, sol), make_pair(userX, userY+1)));
+						sol.pop_back();
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void GameController::run(vector<vector<char>> mapi, int x, int y)
+{
+	mapi.resize(pushBox -> getCol());
+	for(int i = 0; i < mapi.size(); i++)
+		mapi[i].resize(pushBox -> getRow());
+	
+	for(int i = 0; i < mapi.size(); i++)
+	{
+		for(int j = 0; j < mapi[i].size(); j++)
+		{
+			mapi[i][j] = pushBox -> getMap(i,j);
+		}
+	}
+
+	vector<char> sol;
+	bool isGet = getSolution(mapi,x,y, sol);
+}
+
+void GameController::doAuto()
+{
+	vector<vector<char>> map;
+	run(map, pushBox -> getX_userPos(), pushBox -> getY_userPos());
+	for(int i = 0; i < finalSol.size(); i++)
+	{
+		switch(finalSol.at(i))
+		{
+			case 'R':
+				move(Coordinates(1,0));
 				break;
-			} // end swtich
-		}	 // end while
-	}		  //first while
+			case 'L':
+				move(Coordinates(-1,0));
+				break;
+			case 'U':
+				move(Coordinates(0,-1));
+				break;
+			case 'D':
+				move(Coordinates(0,1));
+				break;
+		}
+
+		postProcessing();
+		sleep(1);
+	}
+}
+
+bool GameController::gameWin(vector<vector<char>> map)
+{
+	vector<Coordinates> goal = pushBox -> getGoalList();
+	for(int i = 0; i < goal.size(); i++)
+	{
+		int goal_x = goal[i].x;
+		int goal_y = goal[i].y;
+
+		if(map[goal_y][goal_x] == BOX)
+			continue;
+		else
+			return false;
+	}
+
+	return true;
 }
