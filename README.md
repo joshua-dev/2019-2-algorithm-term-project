@@ -14,5 +14,5 @@
 
 - [x] Sokoban Resolving algorithm
 
-- [ ] Auto-Resolving algorithm Improvement: Optimization
-- [ ] Code Refactoring
+- [x] Auto-Resolving algorithm Improvement: Optimization
+- [x] Code Refactoring
