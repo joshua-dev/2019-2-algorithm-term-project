@@ -1,7 +1,6 @@
 #include "GameController.h"
 #include <unistd.h>
 
-
 void GameController::gameInitialize()
 {
 	setlocale(LC_ALL, "");
@@ -60,7 +59,7 @@ void GameController::gameDelete()
 bool GameController::isInMapNow()
 {
 	return 0 < pushBox->getX_userPos() && pushBox->getX_userPos() < pushBox->getRow() &&
-		   0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
+		0 < pushBox->getY_userPos() && pushBox->getY_userPos() < pushBox->getCol();
 }
 
 bool GameController::isInMapNow(int dy, int dx)
@@ -283,7 +282,7 @@ void GameController::autoResolve()
 
 	// Get Goals' position
 	vector<Coordinates> goals = pushBox->getGoalList();
-
+  
 	int goalsize = 0;
 	while (goalsize != goals.size())
 	{
