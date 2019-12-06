@@ -41,7 +41,7 @@ public:
 	bool gameWin(vector<vector<char>> map);
 
 private:
-	const int FINALLEVEL = 5;
+	const int FINALLEVEL = 6;
 	PushBox *pushBox;
 	GameViewer *gameViewer;
 	vector<char> finalSol;
