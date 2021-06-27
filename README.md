@@ -1,18 +1,17 @@
-# 2019-2-algorithm-term-project
+# Sokoban Solver
 
-2019-2 Algorithm term project: Sokoban Resolver
+KMU CS Algorithm term project: Push Box Game Auto Solver
 
 # TODO
 
-- [x] Sokoban game implementation
+- [x] Sokoban implementation
 
 - [x] Interface Design
 - [x] Highest Level Class Definition
-- [x] Sub-Class Implementation
+- [x] Subclass Implementation
 - [x] Utility Class (Game Controller) Implementation
-- [x] TUI Component
+- [x] TUI components
 
-- [x] Sokoban Resolving algorithm
+- [x] Sokoban solving algorithm
 
-- [x] Auto-Resolving algorithm Improvement: Optimization
-- [x] Code Refactoring
+- [x] Auto-solving algorithm improvement: Optimization
